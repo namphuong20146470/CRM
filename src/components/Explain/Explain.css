@@ -1,0 +1,160 @@
+/* Explain.css */
+
+/* Global Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container */
+.p-6 {
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+/* Title */
+.text-2xl {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e3a8a; /* Blue-900 */
+}
+
+/* Input File */
+input[type="file"] {
+  border: 1px solid #d1d5db; /* Gray-300 */
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: #3b82f6; /* Blue-500 */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Error Message */
+.text-red-500 {
+  color: #ef4444; /* Red-500 */
+  margin-top: 0.75rem;
+  white-space: pre-line;
+}
+
+/* Total Amount */
+.text-lg {
+  font-size: 1.125rem;
+  margin-top: 1rem;
+}
+
+.text-green-600 {
+  color: #16a34a; /* Green-600 */
+}
+
+/* Table Container */
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb; /* Gray-200 */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+th {
+  background-color: #2563eb; /* Blue-600 */
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+tr {
+  border-bottom: 1px solid #e5e7eb; /* Gray-200 */
+}
+
+tr:hover:not(thead tr) {
+  background-color: #f9fafb; /* Gray-50 */
+}
+
+/* Highlight rows with issues (0 VND, suspiciously low, or error) */
+.bg-red-50 {
+  background-color: #fef2f2; /* Red-50 */
+}
+
+.text-red-600 {
+  color: #dc2626; /* Red-600 */
+}
+
+/* Valid status */
+.text-green-600 {
+  color: #16a34a; /* Green-600 */
+}
+
+/* Skipped Files Section */
+.bg-gray-200 {
+  background-color: #e5e7eb; /* Gray-200 */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bg-gray-600 {
+  background-color: #4b5563; /* Gray-600 */
+}
+
+.text-gray-700 {
+  color: #374151; /* Gray-700 */
+}
+
+.text-gray-500 {
+  color: #6b7280; /* Gray-500 */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  th,
+  td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+
+  .text-lg {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  th,
+  td {
+    padding: 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  input[type="file"] {
+    padding: 0.5rem;
+  }
+}

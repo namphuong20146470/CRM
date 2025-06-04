@@ -1,0 +1,104 @@
+.export-modal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .export-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .export-section {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .export-section h3 {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+  }
+  
+  .export-field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .export-fields-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  .export-summary {
+    margin-top: 16px;
+    padding: 12px;
+    background-color: #f6f6f6;
+    border-radius: 4px;
+  }
+  
+  .export-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+  
+  /* Edit data tab styles */
+  .edit-data-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .edit-data-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #f6f6f6;
+    border-radius: 4px;
+  }
+  
+  .editable-row .ant-form-item-explain {
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+  }
+  
+  .editable-row .ant-form-item {
+    margin: 0;
+  }
+  
+  .editable-cell {
+    position: relative;
+  }
+  
+  .editable-cell-value-wrap {
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  
+  .editable-row:hover .editable-cell-value-wrap {
+    padding: 4px 11px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+  }
+  
+  @media (max-width: 768px) {
+    .export-fields-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .export-fields-container {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }

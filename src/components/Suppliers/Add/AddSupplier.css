@@ -1,0 +1,37 @@
+.black-text-input {
+  color: #000000 !important;
+}
+
+.black-text-input input {
+  color: #000000 !important;
+}
+
+.black-text-input textarea {
+  color: #000000 !important;
+}
+
+.black-text-input .ant-select-selection-item {
+  color: #000000 !important;
+}
+
+.black-text-input .ant-picker-input input {
+  color: #000000 !important;
+}
+
+/* For dropdown options */
+.ant-select-dropdown .ant-select-item {
+  color: #000000 !important;
+}
+
+/* For placeholder text */
+.black-text-input::placeholder {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.black-text-input input::placeholder {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.black-text-input textarea::placeholder {
+  color: rgba(0, 0, 0, 0.45) !important;
+} 

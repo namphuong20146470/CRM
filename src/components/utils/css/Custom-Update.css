@@ -1,0 +1,137 @@
+/* Container chỉnh sửa */
+.edit-container {
+  padding: 24px;
+}
+
+/* Card có bóng và bo tròn mượt */
+.edit-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  background: #fff;
+  padding: 24px;
+}
+
+.edit-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+/* Form */
+.edit-form {
+  margin-top: 16px;
+}
+
+/* Input, Select, DatePicker, TextArea, NumberInput */
+.edit-form input,
+.edit-form .ant-input,
+.edit-form .ant-input-number-input,
+.edit-form .ant-picker,
+.edit-form .ant-input-affix-wrapper,
+.edit-form .ant-select-selector,
+.edit-form .ant-select-selection-item,
+.edit-form textarea {
+  color: rgba(0, 0, 0, 0.85) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  transition: all 0.3s;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+}
+
+.edit-form .ant-input-number-input {
+  height: 100% !important;
+}
+
+.edit-form .ant-input-number {
+  height: 40px !important;
+  border-radius: 6px !important;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Focus: Viền và shadow rõ ràng */
+.edit-form .ant-input:focus,
+.edit-form .ant-input-number:focus,
+.edit-form .ant-input-affix-wrapper:focus-within,
+.edit-form .ant-select-focused .ant-select-selector,
+.edit-form .ant-input-number-focused,
+.edit-form .ant-picker-focused {
+  border-color: #1890ff !important;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.3) !important;
+}
+
+/* Select khi chưa chọn */
+.edit-form .ant-select-selector {
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Placeholder */
+.edit-form ::placeholder {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Dropdown text */
+.ant-select-dropdown .ant-select-item {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Date Picker */
+.ant-picker-content th,
+.ant-picker-content td {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Label đậm hơn */
+.ant-form-item-label > label {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+}
+
+/* Trường disabled */
+.ant-input[disabled],
+.edit-form input[disabled] {
+  height: 40px !important;
+  background-color: #f5f5f5 !important;
+  color: rgba(0, 0, 0, 0.65) !important;
+  border-radius: 6px !important;
+  border-top: 1px solid #d9d9d9 !important;
+  border-bottom: 1px solid #d9d9d9 !important;;
+}
+
+/* Action buttons */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 32px;
+}
+
+/* Giới hạn chiều cao modal và card, thêm thanh cuộn nếu vượt quá */
+.add_update-modal .ant-modal-body {
+  max-height: 80vh !important;
+  overflow-y: auto !important;
+  padding: 14px !important;
+  margin-top: -20px !important;
+  margin-bottom: 25px !important;
+}
+
+.edit-card {
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* Responsive cho form */
+@media (max-width: 768px) {
+  .edit-card {
+    max-height: 80vh;
+    padding: 8px;
+  }
+  .ant-modal-body {
+    padding: 8px !important;
+  }
+}

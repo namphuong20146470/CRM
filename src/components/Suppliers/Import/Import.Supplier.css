@@ -1,0 +1,83 @@
+.import-container {
+    padding: 16px 0;
+  }
+  
+  .import-modal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1890ff;
+  }
+  
+  .import-content {
+    margin-top: 16px;
+  }
+  
+  .template-section {
+    margin-bottom: 16px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #f0f0f0;
+  }
+  
+  .template-download {
+    margin-top: 12px;
+  }
+  
+  /* Preview section */
+  .preview-section {
+    margin-top: 16px;
+  }
+  
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .preview-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding: 16px 0;
+    border-top: 1px solid #f0f0f0;
+  }
+  
+  .preview-table {
+    margin-top: 16px;
+  }
+  
+  /* Error styles */
+  .error-list {
+    margin: 16px 0;
+  }
+  
+  .error-items {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  .error-items li {
+    margin-bottom: 4px;
+  }
+  
+  .error-row {
+    background-color: #fff1f0;
+  }
+  
+  /* Ensure text in the table is black */
+  .preview-table .ant-table {
+    color: rgba(0, 0, 0, 0.85);
+  }
+  
+  .ant-upload.ant-upload-drag p.ant-upload-hint {
+    color: rgba(0, 0, 0, 0.45);
+  }
+  
+  .ant-upload.ant-upload-drag p.ant-upload-text {
+    color: rgba(0, 0, 0, 0.85);
+  }
