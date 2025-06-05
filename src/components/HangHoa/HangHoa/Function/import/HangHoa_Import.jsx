@@ -359,7 +359,7 @@ const HangHoa_Import = ({ open, onClose, onSuccess, disabled }) => {
                   <li>Tải lên file Excel đã điền thông tin.</li>
                   <li>Kiểm tra dữ liệu xem trước và sửa các lỗi nếu có.</li>
                   <li>Nhấn "Nhập dữ liệu" để hoàn tất.</li>
-                  <li>Các trường bắt buộc: Mã hàng, Tên hàng, Nhà cung cấp, Người cập nhật, Trọng lượng tịnh, Giá thực, Đơn vị bán hàng, Price List, Ngày giá.</li>
+                  <li>Các trường bắt buộc: Mã hàng, Tên hàng, Nhà cung cấp, Người cập nhật, Trọng lượng tịnh, Giá thực, Price List, Ngày giá.</li>
                 </ol>
               }
               type="info"

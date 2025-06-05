@@ -35,7 +35,6 @@ const TonKho_UpdateAuto = ({ visible, onClose, onRefresh, disabled }) => {
             ]);
 
             // === Lưu lại mapping tồn kho tối thiểu cũ cho từng mã hàng ===
-            // Ưu tiên lấy tồn kho tối thiểu của năm mới nhất (nếu có nhiều năm)
             const mucTonToiThieuMap = {};
             inventoryData.forEach(item => {
                 if (
@@ -49,8 +48,28 @@ const TonKho_UpdateAuto = ({ visible, onClose, onRefresh, disabled }) => {
                 }
             });
 
+            // === Tạo tập hợp tất cả các cặp (ma_hang, ten_kho, nam) xuất hiện ở stock-in hoặc stock-out ===
+            const allKeysSet = new Set();
+            // Từ stock-in
+            stockInData.forEach(item => {
+                const year = dayjs(item.ngay_nhap_hang).year();
+                allKeysSet.add(`${item.ma_hang}|||${item.ten_kho}|||${year}`);
+            });
+            // Từ stock-out
+            stockOutData.forEach(item => {
+                const year = dayjs(item.ngay_xuat_hang).year();
+                allKeysSet.add(`${item.ma_hang}|||${item.ten_kho}|||${year}`);
+            });
+
+            // Gom lại thành mảng các object
+            const allKeys = Array.from(allKeysSet).map(key => {
+                const [ma_hang, ten_kho, nam] = key.split('|||');
+                return { ma_hang, ten_kho, nam: Number(nam) };
+            });
+
+            // Xử lý từng năm
             for (const year of yearOptions) {
-                // Bước 1: Xóa các bản ghi tồn kho cũ của năm
+                // Xóa inventory cũ của năm này
                 const inventoryToDelete = inventoryData.filter(item => item.nam === year);
                 if (inventoryToDelete.length > 0) {
                     await Promise.all(
@@ -63,46 +82,33 @@ const TonKho_UpdateAuto = ({ visible, onClose, onRefresh, disabled }) => {
                     console.log(`Không có bản ghi nào để xóa trong năm ${year}.`);
                 }
 
-                // Bước 2: Tạo danh sách mã hàng duy nhất từ stock-in
-                const productMap = {};
-                stockInData.forEach(item => {
-                    if (!productMap[item.ma_hang]) {
-                        productMap[item.ma_hang] = {
-                            ma_hang: item.ma_hang,
-                            ten_kho: item.ten_kho,
-                            tong_nhap: 0,
-                            tong_xuat: 0,
-                            tong_nhap_truoc: 0,
-                            tong_xuat_truoc: 0
-                        };
-                    }
-                });
+                // Lọc ra các cặp (ma_hang, ten_kho) có phát sinh trong năm này
+                const keysForYear = allKeys.filter(k => k.nam === year);
 
-                // Bước 3: Tính tổng nhập – xuất từng mã hàng theo từng năm
-                for (const item of stockInData) {
-                    const y = dayjs(item.ngay_nhap_hang).year();
-                    if (productMap[item.ma_hang]) {
-                        if (y === year) productMap[item.ma_hang].tong_nhap += item.so_luong_nhap;
-                        else if (y < year) productMap[item.ma_hang].tong_nhap_truoc += item.so_luong_nhap;
-                    }
-                }
-
-                for (const item of stockOutData) {
-                    const y = dayjs(item.ngay_xuat_hang).year();
-                    if (productMap[item.ma_hang]) {
-                        if (y === year) productMap[item.ma_hang].tong_xuat += item.so_luong_xuat;
-                        else if (y < year) productMap[item.ma_hang].tong_xuat_truoc += item.so_luong_xuat;
-                    }
-                }
-
-                // Bước 5: Ghi tồn kho mới
                 let stt = 1;
-                for (const ma_hang in productMap) {
-                    const p = productMap[ma_hang];
-                    const ton_truoc_do = p.tong_nhap_truoc - p.tong_xuat_truoc;
-                    const ton_hien_tai = ton_truoc_do + p.tong_nhap - p.tong_xuat;
+                for (const { ma_hang, ten_kho } of keysForYear) {
+                    // Tính tổng nhập, xuất, nhập trước, xuất trước cho từng cặp mã hàng - kho
+                    let tong_nhap = 0, tong_xuat = 0, tong_nhap_truoc = 0, tong_xuat_truoc = 0;
 
-                    // === Lấy tồn kho tối thiểu cũ nếu có, nếu không thì mặc định 2 ===
+                    stockInData.forEach(item => {
+                        if (item.ma_hang === ma_hang && item.ten_kho === ten_kho) {
+                            const y = dayjs(item.ngay_nhap_hang).year();
+                            if (y === year) tong_nhap += item.so_luong_nhap;
+                            else if (y < year) tong_nhap_truoc += item.so_luong_nhap;
+                        }
+                    });
+
+                    stockOutData.forEach(item => {
+                        if (item.ma_hang === ma_hang && item.ten_kho === ten_kho) {
+                            const y = dayjs(item.ngay_xuat_hang).year();
+                            if (y === year) tong_xuat += item.so_luong_xuat;
+                            else if (y < year) tong_xuat_truoc += item.so_luong_xuat;
+                        }
+                    });
+
+                    const ton_truoc_do = tong_nhap_truoc - tong_xuat_truoc;
+                    const ton_hien_tai = ton_truoc_do + tong_nhap - tong_xuat;
+
                     const muc_ton_toi_thieu =
                         mucTonToiThieuMap[ma_hang]?.muc_ton_toi_thieu !== undefined
                             ? mucTonToiThieuMap[ma_hang].muc_ton_toi_thieu
@@ -113,10 +119,10 @@ const TonKho_UpdateAuto = ({ visible, onClose, onRefresh, disabled }) => {
                         stt: stt,
                         ma_inventory: `TK${year}${String(stt).padStart(3, '0')}`,
                         ma_hang,
-                        ten_kho: p.ten_kho,
+                        ten_kho,
                         ton_truoc_do,
-                        tong_nhap: p.tong_nhap,
-                        tong_xuat: p.tong_xuat,
+                        tong_nhap,
+                        tong_xuat,
                         ton_hien_tai,
                         muc_ton_toi_thieu
                     };

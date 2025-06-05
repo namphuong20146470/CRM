@@ -69,7 +69,7 @@ const BangHangHoa = () => {
     }, []);
 
     const handleEdit = (record) => {
-        setEditingProduct({ ma_hang: record.ma_hang, ngay_cap_nhat: record.ngay_cap_nhat });
+        setEditingProduct({ ma_hang: record.ma_hang, stt: record.stt });
     };
 
     const handleEditClose = () => {
@@ -92,6 +92,7 @@ const BangHangHoa = () => {
 
     const handleRefresh = () => {
         setSearchTerm('');
+        setPricelistSearch('');
         resetFilters([setStatusFilter, setCountryFilter, setSupplierFilter]);
         setCurrentPage(1);
         fetchProducts();
@@ -195,7 +196,7 @@ const BangHangHoa = () => {
             {editingProduct && (
                 <EditProduct
                     productId={editingProduct.ma_hang}
-                    productAt={editingProduct.ngay_cap_nhat} // giữ nguyên giá trị gốc
+                    stt={editingProduct.stt}
                     onCancel={() => setEditingProduct(null)}
                     onSuccess={handleEditClose}
                 />

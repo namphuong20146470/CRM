@@ -137,6 +137,8 @@ const AddStockOut = ({ onCancel, onSuccess, disabled }) => {
         ngay_xuat_hang: values.ngay_xuat_hang?.format('YYYY-MM-DD'),
       };
 
+      console.log('Payload gửi lên API:', payload);
+
       await createItem('https://dx.hoangphucthanh.vn:3000/warehouse/stock-out', payload);
 
       message.success('Thêm mới xuất hàng thành công!');

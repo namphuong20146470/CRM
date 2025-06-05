@@ -26,7 +26,7 @@ const AddContractType = ({ onCancel, onSuccess, disabled }) => {
         const allContract_Types = await fetchDataList('https://dx.hoangphucthanh.vn:3000/warehouse/contract-types');
         const maxSTT = allContract_Types.length ? Math.max(...allContract_Types.map(item => item.stt || 0)) : 0;
         const newSTT = maxSTT + 1;
-        const generatedMaLHD = `HD${String(newSTT).padStart(2, '0')}`;
+        const generatedMaLHD = `LHD${String(newSTT).padStart(2, '0')}`;
         setNewMaLHD(generatedMaLHD);
   
         // Gán luôn giá trị mặc định vào form

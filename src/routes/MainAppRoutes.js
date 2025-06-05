@@ -32,10 +32,6 @@ const Suppliers = lazy(() => import("../components/Suppliers/Suppliers"));
 const AddSupplier = lazy(() => import("../components/Suppliers/AddSupplier"));
 const Explain = lazy(() => import("../components/Explain/Explain"));
 
-// Import new components for Potential Customer section
-const OpportunitySource = lazy(() => import("../components/KhachHangTN/NguonCH/NguonCH_Main"));
-const CustomerGroup = lazy(() => import("../components/KhachHangTN/GroupKH/nhomKH_Main"));
-const PotentialCustomer = lazy(() => import("../components/KhachHangTN/KHTN/KHTN_Main"));
 function MainAppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -87,11 +83,6 @@ function MainAppRoutes() {
           <Route path="/system/crm/contracts" element={<HopDong />} />
           <Route path="/system/crm/contract_type" element={<LoaiHopDong />} />
           <Route path="/system/crm/bill" element={<Bill />} />
-          
-          {/* Route Potential Customer - Add new routes */}
-          <Route path="/system/crm/opportunity_source" element={<OpportunitySource />} />
-          <Route path="/system/crm/customer_group" element={<CustomerGroup />} />
-          <Route path="/system/crm/potential_customer" element={<PotentialCustomer />} />
       
           {/* Route Products */}
           <Route path="/system/warehouse/product_type" element={<LoaiHang />} />
