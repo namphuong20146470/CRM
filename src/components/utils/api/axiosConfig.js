@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const instance = axios.create({
+// Instance for warehouse endpoints
+const warehouseInstance = axios.create({
   baseURL: 'https://dx.hoangphucthanh.vn:3000/warehouse',
   timeout: 10000,
   headers: {
@@ -8,4 +9,17 @@ const instance = axios.create({
   },
 });
 
-export default instance;
+// Instance for CRM endpoints
+const crmInstance = axios.create({
+  baseURL: 'https://dx.hoangphucthanh.vn:3000/crm',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// For backward compatibility
+const instance = warehouseInstance;
+
+export { warehouseInstance, crmInstance };
+export default instance; // Default is warehouse for backward compatibility
