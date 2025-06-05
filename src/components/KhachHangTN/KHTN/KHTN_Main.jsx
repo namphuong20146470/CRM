@@ -1,6 +1,6 @@
 // Thư viện React và Ant Design
 import React, { useState, useEffect } from 'react';
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
 
 //Thao tác chung
 // Các file CSS dùng chung để chuẩn hóa giao diện bảng, nút, filter
@@ -20,21 +20,19 @@ import { hasFullPermission } from '../../utils/auth/permissionUtils';
 
 // Các tính năng
 import './KHTN_Main.css';
-import HopDong_Import from './Function/KHTN_Import';
-import HopDong_Export from './Function/KHTN_Export';
-import HopDongFilter from './Function/KHTN_Filter';
-import { filterHopDong } from "./Function/KHTN_FilterLogic";
-import HopDongTableView from './View/KHTN_TableView';
-import EditContract from './Function/KHTN_Update';
-import AddContract from './Function/KHTN_Add';
-import RemoveContract from './Function/KHTN_Delete';
+import KhachHangTNImport from './Function/KHTN_Import';
+import KhachHangTNExport from './Function/KHTN_Export';
+import KhachHangTNTableView from './View/KHTN_TableView';
+import EditKhachHangTN from './Function/KHTN_Update';
+import AddKhachHangTN from './Function/KHTN_Add';
+import RemoveKhachHangTN from './Function/KHTN_Delete';
 
-const BangHopDong = () => {
+const BangKhachHangTN = () => {
     // State lưu dữ liệu bảng và trạng thái chung
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const canEdit = hasFullPermission(undefined, {
-        allowedUsernames: ['VTTphuong', 'PPcuong'] ,// Thêm user này có toàn quyền
+        allowedUsernames: ['VTTphuong', 'PPcuong'], // Thêm user này có toàn quyền
         allowedRoles: ['VT01', 'VT02'], // Thêm role này có toàn quyền
     });
     
@@ -43,68 +41,73 @@ const BangHopDong = () => {
     const [showExportModal, setShowExportModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [yearFilter, setYearFilter] = useState('all');
-    const [contract_typeFilter, setContract_TypeFilter] = useState('all');
+    const [nhomKHFilter, setNhomKHFilter] = useState('all');
+    const [nguonCHFilter, setNguonCHFilter] = useState('all');
     const [accountFilter, setAccountFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(1000); // Set to a very large number
     const [currentPage, setCurrentPage] = useState(1);
-    const [sortField, setSortField] = useState('ngay_ky_hop_dong');
+    const [sortField, setSortField] = useState('ngay_tao');
     const [sortOrder, setSortOrder] = useState('descend');
-    const [editingContract, setEditingContract] = useState(null);
-    const [addContract, setAddContract] = useState(false);
-    const [deletingContract, setDeletingContract] = useState(null);
+    const [editingKhachHang, setEditingKhachHang] = useState(null);
+    const [addKhachHang, setAddKhachHang] = useState(false);
+    const [deletingKhachHang, setDeletingKhachHang] = useState(null);
+    const [showAllRecords, setShowAllRecords] = useState(false);
 
-    // Gọi API lấy danh sách khách hàng bằng hàm tái sử dụng
-    const fetchContracts = () => {
+    // Gọi API lấy danh sách khách hàng tiềm năng bằng hàm tái sử dụng
+    const fetchKhachHangTN = () => {
         fetchData({
-            endpoint: '/contracts', // endpoint API
+            endpoint: '/potential-customers', // endpoint CRM API
             setData,                // set state dữ liệu
             setLoading,             // set trạng thái loading
+            apiType: 'crm'          // Chỉ định sử dụng API CRM
         });
     };
 
     // Tự động gọi API khi component mount
     useEffect(() => {
-        fetchContracts();
+        fetchKhachHangTN();
     }, []);
 
     const handleEdit = (record) => {
-        setEditingContract(record.so_hop_dong);
+        setEditingKhachHang(record.ma_khach_hang);
     };
 
     const handleEditClose = () => {
-        setEditingContract(null);
-        fetchContracts();
+        setEditingKhachHang(null);
+        fetchKhachHangTN();
     };
 
     const handleAddSuccess = () => {
-        setAddContract(false);
-        fetchContracts();
+        setAddKhachHang(false);
+        fetchKhachHangTN();
     };
 
     const handleRemove = (record) => {
-        setDeletingContract(record);
+        setDeletingKhachHang(record);
     };
 
     const handleRefresh = () => {
         setSearchTerm('');
-        resetFilters([setYearFilter, setAccountFilter, setStatusFilter, setContract_TypeFilter]);
+        resetFilters([setYearFilter, setAccountFilter, setStatusFilter, setNhomKHFilter, setNguonCHFilter]);
         setCurrentPage(1);
-        fetchContracts();
-        setSortField('ngay_ky_hop_dong');
+        fetchKhachHangTN();
+        setSortField('ngay_tao');
         setSortOrder('descend');
     };
 
-    const filteredData = filterHopDong(data, {
-        searchTerm,
-        yearFilter,
-        contract_typeFilter,
-        accountFilter,
-        statusFilter,
+    // Temporary basic filter logic without the external component
+    const filteredData = data.filter(item => {
+        // Simple search logic
+        const searchLower = searchTerm.toLowerCase();
+        return searchTerm === '' || 
+            (item.ma_khach_hang && item.ma_khach_hang.toLowerCase().includes(searchLower)) ||
+            (item.ten_khach_hang && item.ten_khach_hang.toLowerCase().includes(searchLower));
     });
+    
     const sortedData = sortField
         ? sortTableData(filteredData, sortField, sortOrder)
-        : sortTableData(filteredData, 'ngay_ky_hop_dong', 'descend');
+        : sortTableData(filteredData, 'ngay_tao', 'descend');
 
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
@@ -112,26 +115,26 @@ const BangHopDong = () => {
     };
 
     return (
-        <div className="bang-hop-dong-container">
+        <div className="bang-khach-hang-container">
             <AreaHeader
-                title="Danh mục hợp đồng"
+                title="Khách hàng tiềm năng"
                 onImportClick={() => setShowImportModal(true)}
                 onExportClick={() => setShowExportModal(true)}
-                onAddClick={() => setAddContract(true)} 
+                onAddClick={() => setAddKhachHang(true)} 
                 disableImport={!canEdit}
                 disableAdd={!canEdit}
             />
 
-            <HopDong_Import
+            <KhachHangTNImport
                 open={showImportModal}
                 onClose={() => setShowImportModal(false)}
                 onSuccess={() => {
                     setShowImportModal(false);
-                    fetchContracts(); // Gọi lại API để cập nhật danh sách sau khi import
+                    fetchKhachHangTN(); // Gọi lại API để cập nhật danh sách sau khi import
                 }}
             />
 
-            <HopDong_Export
+            <KhachHangTNExport
                 data={data}
                 filteredData={filteredData}
                 sortedData={sortedData}
@@ -139,26 +142,13 @@ const BangHopDong = () => {
                 onClose={() => setShowExportModal(false)}
             />
 
-            <HopDongFilter
-                data={data}
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                yearFilter={yearFilter}
-                setYearFilter={setYearFilter}
-                contract_typeFilter={contract_typeFilter}
-                setContract_TypeFilter={setContract_TypeFilter}
-                accountFilter={accountFilter}
-                setAccountFilter={setAccountFilter}
-                statusFilter={statusFilter}
-                setStatusFilter={setStatusFilter}
-                onRefresh={handleRefresh}
-                loading={loading}
-            />
+            {/* Filter component removed */}
 
-            <HopDongTableView
+            <KhachHangTNTableView
                 data={sortedData}
                 currentPage={currentPage}
                 pageSize={pageSize}
+                showAllRecords={showAllRecords}
                 loading={loading}
                 handleEdit={handleEdit}
                 handleRemove={handleRemove}
@@ -171,6 +161,8 @@ const BangHopDong = () => {
                 sortField={sortField}
                 sortOrder={sortOrder}
             />
+    
+
 
             <PaginationControl
                 total={filteredData.length}
@@ -182,46 +174,47 @@ const BangHopDong = () => {
 
             <Modal
                 className="add_update-modal"
-                open={!!editingContract}
-                onCancel={() => setEditingContract(null)}
+                open={!!editingKhachHang}
+                onCancel={() => setEditingKhachHang(null)}
                 footer={null}
                 width={1000}
                 destroyOnClose
             >
-                <EditContract
-                    contractId={editingContract}
-                    onCancel={() => setEditingContract(null)}
+                <EditKhachHangTN
+                    khachHangId={editingKhachHang}
+                    onCancel={() => setEditingKhachHang(null)}
                     onSuccess={handleEditClose}
                 />
             </Modal>
 
             <Modal
                 className="add_update-modal"
-                open={addContract}
-                onCancel={() => setAddContract(false)}
+                open={addKhachHang}
+                onCancel={() => setAddKhachHang(false)}
                 footer={null}
                 width={1000}
                 destroyOnClose
             >
-                <AddContract
-                    visible={addContract}
-                    onCancel={() => setAddContract(false)}
+                <AddKhachHangTN
+                    visible={addKhachHang}
+                    onCancel={() => setAddKhachHang(false)}
                     onSuccess={handleAddSuccess}
                 />
             </Modal>
 
-            {deletingContract && (
-                <RemoveContract
-                    contractId={deletingContract.so_hop_dong}
+            {deletingKhachHang && (
+                <RemoveKhachHangTN
+                    khachHangId={deletingKhachHang.ma_khach_hang}
+                    khachHangName={deletingKhachHang.ten_khach_hang}
                     onSuccess={() => {
-                        setDeletingContract(null);
-                        fetchContracts();
+                        setDeletingKhachHang(null);
+                        fetchKhachHangTN();
                     }}
-                    onCancel={() => setDeletingContract(null)}
+                    onCancel={() => setDeletingKhachHang(null)}
                 />
             )}
         </div>
     );
 };
 
-export default BangHopDong;
+export default BangKhachHangTN;

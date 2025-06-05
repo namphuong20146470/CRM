@@ -4,30 +4,30 @@ import { fetchAndSetList } from '../../../utils/api/fetchHelpers';
 /**
  * Hàm tải danh sách từ API.
  * @param {function} setAccounts - Hàm set state cho danh sách tài khoản.
- * @param {function} setExistingContractTypes - Hàm set state cho danh sách loại hợp đồng.
+ * @param {function} setExistingNhomKH - Hàm set state cho danh sách nhóm khách hàng.
  */
-export const fetchPreviewData = (setAccounts, setExistingContractTypes) => {
+export const fetchPreviewData = (setAccounts, setExistingNhomKH) => {
   fetchAndSetList(
     'https://dx.hoangphucthanh.vn:3000/warehouse/accounts',
     setAccounts,
     'Không thể tải danh sách người dùng'
   );
   fetchAndSetList(
-    'https://dx.hoangphucthanh.vn:3000/warehouse/contract-types',
-    setExistingContractTypes,
-    'Không thể tải danh sách loại hợp đồng'
+    'https://dx.hoangphucthanh.vn:3000/crm/customer-groups',
+    setExistingNhomKH,
+    'Không thể tải danh sách nhóm khách hàng'
   );
 };
 
 /**
- * Kiểm tra xem loại hợp đồng có tồn tại không.
+ * Kiểm tra xem nhóm khách hàng có tồn tại không.
  * @param {string} value - Giá trị cần kiểm tra.
- * @param {array} existingContractTypes - Danh sách loại hợp đồng hiện có.
+ * @param {array} existingNhomKH - Danh sách nhóm khách hàng hiện có.
  * @returns {boolean} - Kết quả kiểm tra.
  */
-export const isContractTypeExisting = (value, existingContractTypes) => {
-  return existingContractTypes.some(
-    (item) => item.ten_loai_hop_dong === value
+export const isNhomKHExisting = (value, existingNhomKH) => {
+  return existingNhomKH.some(
+    (item) => item.ma_nhom_khach_hang === value
   );
 };
 
@@ -42,29 +42,16 @@ export const isAccountExisting = (value, accounts) => {
 };
 
 /**
- * Hàm render cột "Mã loại hợp đồng".
+ * Hàm render cột "Mã nhóm khách hàng".
  * @param {string} text - Giá trị của ô.
  * @param {object} record - Dữ liệu của dòng hiện tại.
  * @param {array} errorItems - Danh sách lỗi.
- * @param {array} existingContractTypes - Danh sách loại hợp đồng hiện có.
+ * @param {array} existingNhomKH - Danh sách nhóm khách hàng hiện có.
  * @returns {JSX.Element} - Nội dung hiển thị trong ô.
  */
-// ...renderMaLoaiHopDong không cần kiểm tra trùng mã nữa, chỉ cần hiển thị mã tự sinh...
-export const renderMaLoaiHopDong = (text, record, errorItems) => {
-  return renderWithErrorHighlight(text, record, errorItems, 'Mã loại hợp đồng');
-};
-
-/**
- * Hàm render cột "Khách hàng".
- * @param {string} text - Giá trị của ô.
- * @param {object} record - Dữ liệu của dòng hiện tại.
- * @param {array} errorItems - Danh sách lỗi.
- * @param {array} existingContractTypes - Danh sách loại hợp đồng hiện có.
- * @returns {JSX.Element} - Nội dung hiển thị trong ô.
- */
-export const renderTenLoaiHopDong = (text, record, errorItems, existingContractTypes) => {
-  const customError = isContractTypeExisting(text, existingContractTypes) ? '(Đã tồn tại)' : null;
-  return renderWithErrorHighlight(text, record, errorItems, 'Loại hợp đồng', customError);
+export const renderMaNhomKH = (text, record, errorItems, existingNhomKH) => {
+  const customError = isNhomKHExisting(text, existingNhomKH) ? '(Đã tồn tại)' : null;
+  return renderWithErrorHighlight(text, record, errorItems, 'Mã nhóm khách hàng', customError);
 };
 
 /**

@@ -8,23 +8,25 @@ import { downloadTemplate } from '../../../utils/import/templateHelpers';
 import TemplateDownloadSection from '../../../utils/import/templateDownloadSection';
 import {
   fetchPreviewData,
-  renderSoHopDong,
-  renderNguoiTao,
-  renderLoaiHopDong,
-  isContractExisting,
+  renderMaKhachHang,
+  renderNguoiPhuTrach,
+  renderNhomKhachHang,
+  renderNguonCoHoi,
+  isKhachHangExisting,
 } from './KHTN_ImportRender';
 import renderPreview from '../../../utils/import/renderPreview';
-import { createItem } from '../../../utils/api/requestHelpers';
+import { crmInstance } from '../../../utils/api/axiosConfig';
 import { convertDateFields } from '../../../utils/convert/convertDateFields';
 import { renderDateField } from '../../../utils/format/renderDateField';
 
 const { Dragger } = Upload;
 
-const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
+const KhachHangTN_Import = ({ open, onClose, onSuccess, disabled }) => {
   // State quản lý dữ liệu
-  const [existingContracts, setExistingContracts] = useState([]);
+  const [existingKhachHang, setExistingKhachHang] = useState([]);
   const [accounts, setAccounts] = useState([]);
-  const [contract_types, setContractTypes] = useState([]);
+  const [nhomKhachHang, setNhomKhachHang] = useState([]);
+  const [nguonCoHoi, setNguonCoHoi] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [parsedData, setParsedData] = useState([]);
   const [importLoading, setImportLoading] = useState(false);
@@ -32,31 +34,30 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
-    fetchPreviewData(setAccounts, setContractTypes, setExistingContracts);
+    fetchPreviewData(setAccounts, setNhomKhachHang, setNguonCoHoi, setExistingKhachHang);
     resetState();
   }, [open]);
 
   // Mapping giữa tiêu đề cột Excel và các trường API
   const columnMapping = {
-    'Số hợp đồng': 'so_hop_dong',
-    'Loại hợp đồng': 'loai_hop_dong',
-    'Ngày ký hợp đồng': 'ngay_ky_hop_dong',
-    'Ngày bắt đầu': 'ngay_bat_dau',
-    'Ngày kết thúc': 'ngay_ket_thuc',
-    'Trạng thái': 'trang_thai_hop_dong',
-    'Giá trị hợp đồng': 'gia_tri_hop_dong',
-    'Đối tác liên quan': 'doi_tac_lien_quan',
-    'Điều khoản thanh toán': 'dieu_khoan_thanh_toan',
-    'Tệp đính kèm': 'tep_dinh_kem',
-    'Vị trí lưu trữ': 'vi_tri_luu_tru',
-    'Người tạo': 'nguoi_tao',
+    'Mã khách hàng': 'ma_khach_hang',
+    'Tên khách hàng': 'ten_khach_hang',
+    'Nhóm khách hàng': 'ma_nhom_khach_hang',
+    'Nguồn cơ hội': 'ma_nguon',
+    'Số điện thoại': 'so_dien_thoai',
+    'Email': 'email',
+    'Địa chỉ': 'dia_chi',
+    'Trạng thái': 'trang_thai',
+    'Doanh thu dự kiến': 'doanh_thu_du_kien',
+    'Ngày tạo': 'ngay_tao',
+    'Người phụ trách': 'nguoi_phu_trach',
     'Ghi chú': 'ghi_chu',
   };
 
   // Các trường bắt buộc
-  const requiredFields = ['so_hop_dong', 'loai_hop_dong', 'ngay_ky_hop_dong', 'doi_tac_lien_quan', 'nguoi_tao'];
-  const uniqueFields = ['so_hop_dong'];
-  const dateFields = ['ngay_ky_hop_dong', 'ngay_bat_dau', 'ngay_ket_thuc'];
+  const requiredFields = ['ma_khach_hang', 'ten_khach_hang', 'ma_nhom_khach_hang', 'ma_nguon', 'nguoi_phu_trach'];
+  const uniqueFields = ['ma_khach_hang'];
+  const dateFields = ['ngay_tao'];
   
   const handleAfterParse = (parsedRows) => {
     const dataWithDateFlags = parsedRows.map(item => convertDateFields(item, dateFields));
@@ -75,24 +76,24 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       requiredFields,
       (field) => getFieldLabel(field, columnMapping),
       setErrorItems,
-      'so_hop_dong', // keyField
-      'so_hop_dong', // nameField
+      'ma_khach_hang', // keyField
+      'ma_khach_hang', // nameField
       {
-        so_hop_dong: (value) => isContractExisting(value, existingContracts),
+        ma_khach_hang: (value) => isKhachHangExisting(value, existingKhachHang),
       },
       duplicates,
-      dateFields,             // truyền mảng các trường ngày
+      dateFields,            
       columnMapping 
     );
   };
 
   const prepareDataForImport = (data) => {
     const soLuongFields = [
-      'gia_tri_hop_dong',
+      'doanh_thu_du_kien',
     ];
     return data.map(item => {
       const converted = convertDateFields(item, [
-        'ngay_ky_hop_dong', 'ngay_bat_dau', 'ngay_ket_thuc'
+        'ngay_tao'
       ]);
       // Gán mặc định 0 cho các trường số lượng nếu bị trống
       soLuongFields.forEach(field => {
@@ -110,8 +111,8 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   // Hàm nhập từng dòng
   const importSingleItem = async (item) => {
     try {
-      const result = await createItem('https://dx.hoangphucthanh.vn:3000/warehouse/contracts', item);
-      return result?.success;
+      const response = await crmInstance.post('/potential-customers', item);
+      return response.status < 400;
     } catch (error) {
       console.error('Lỗi khi nhập từng item:', error);
       return false;
@@ -121,8 +122,8 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   // Hàm nhập toàn bộ dữ liệu
   const importAllItems = async (data) => {
     try {
-      const result = await createItem('https://dx.hoangphucthanh.vn:3000/warehouse/contracts', data);
-      return result?.success;
+      const response = await crmInstance.post('/potential-customers/batch', data);
+      return response.status < 400;
     } catch (error) {
       console.error('Error importing data:', error);
       throw error;
@@ -151,8 +152,8 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       const success = await importAllItems(dataToImport);
 
       if (success) {
-        message.success(`Đã nhập ${dataToImport.length} hợp đồng thành công!`);
-        fetchPreviewData(setAccounts, setContractTypes, setExistingContracts);
+        message.success(`Đã nhập ${dataToImport.length} khách hàng thành công!`);
+        fetchPreviewData(setAccounts, setNhomKhachHang, setNguonCoHoi, setExistingKhachHang);
         resetState();
         onSuccess?.();
         onClose();
@@ -162,7 +163,7 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       throw new Error('Có lỗi xảy ra khi nhập dữ liệu');
     } catch (error) {
       message.error(`Không thể nhập dữ liệu: ${error.message}`);
-      message.info('Thử một cách khác - tạo từng hợp đồng một...');
+      message.info('Thử một cách khác - tạo từng khách hàng một...');
 
       // Thử nhập từng dòng
       let successCount = 0;
@@ -172,13 +173,12 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       }
 
       if (successCount > 0) {
-        message.success(`Đã nhập ${successCount}/${parsedData.length} hợp đồng thành công!`);
+        message.success(`Đã nhập ${successCount}/${parsedData.length} khách hàng thành công!`);
       } else {
-        message.error('Không thể nhập được hợp đồng nào!');
+        message.error('Không thể nhập được khách hàng nào!');
       }
 
-      // Cập nhật lại danh sách hợp đồng hiện có sau khi import từng dòng
-      fetchPreviewData(setAccounts, setContractTypes, setExistingContracts);
+      fetchPreviewData(setAccounts, setNhomKhachHang, setNguonCoHoi, setExistingKhachHang);
       resetState();
       onSuccess?.();
       onClose();
@@ -207,66 +207,68 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       render: (text) => text + 1 
     },
     { 
-      title: 'Số hợp đồng', 
-      dataIndex: 'so_hop_dong', 
-      key: 'so_hop_dong', 
+      title: 'Mã khách hàng', 
+      dataIndex: 'ma_khach_hang', 
+      key: 'ma_khach_hang', 
+      width: "8%",
+      render: (text, record) => renderMaKhachHang(text, record, errorItems, existingKhachHang)
+    },
+    { 
+      title: 'Tên khách hàng', 
+      dataIndex: 'ten_khach_hang', 
+      key: 'ten_khach_hang', 
+      width: "12%",
+    },
+    {
+      title: 'Nhóm khách hàng',
+      dataIndex: 'ma_nhom_khach_hang',
+      key: 'ma_nhom_khach_hang',
       width: "10%",
-      render: (text, record) => renderSoHopDong(text, record, errorItems, existingContracts)
+      render: (maNhom, record) => renderNhomKhachHang(maNhom, record, nhomKhachHang, errorItems)
     },
     {
-      title: 'Loại hợp đồng',
-      dataIndex: 'loai_hop_dong',
-      key: 'loai_hop_dong',
-      width: "8%",
-      render: (maLoaiHopDong, record) => renderLoaiHopDong(maLoaiHopDong, record, contract_types, errorItems)
+      title: 'Nguồn cơ hội',
+      dataIndex: 'ma_nguon',
+      key: 'ma_nguon',
+      width: "10%",
+      render: (maNguon, record) => renderNguonCoHoi(maNguon, record, nguonCoHoi, errorItems)
+    },
+    { title: 'Trạng thái', dataIndex: 'trang_thai', key: 'trang_thai', width: "7%" },
+    { title: 'Số điện thoại', dataIndex: 'so_dien_thoai', key: 'so_dien_thoai', width: "8%" },
+    { title: 'Email', dataIndex: 'email', key: 'email', width: "10%" },
+    { title: 'Địa chỉ', dataIndex: 'dia_chi', key: 'dia_chi', width: "12%" },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'ngay_tao',
+      key: 'ngay_tao',
+      width: "7%",
+      render: (value, record) => renderDateField(value, record, errorItems, 'Ngày tạo', 'ngay_tao')
+    },
+    { 
+      title: 'Doanh thu dự kiến', 
+      dataIndex: 'doanh_thu_du_kien', 
+      key: 'doanh_thu_du_kien', 
+      width: "8%", 
+      render: (value) => value ? value.toLocaleString('vi-VN') : '0'  
     },
     {
-        title: 'Ngày ký hợp đồng',
-        dataIndex: 'ngay_ky_hop_dong',
-        key: 'ngay_ky_hop_dong',
-        width: "5%",
-        render: (value, record) => renderDateField(value, record, errorItems, 'Ngày ký hợp đồng', 'ngay_ky_hop_dong')
+      title: 'Người phụ trách',
+      dataIndex: 'nguoi_phu_trach',
+      key: 'nguoi_phu_trach',
+      width: "10%",
+      render: (maNguoiDung, record) => renderNguoiPhuTrach(maNguoiDung, record, accounts, errorItems)
     },
-    {
-        title: 'Ngày bắt đầu',
-        dataIndex: 'ngay_bat_dau',
-        key: 'ngay_bat_dau',
-        width: "5%",
-        render: (value, record) => renderDateField(value, record, errorItems, 'Ngày bắt đầu', 'ngay_bat_dau')
-    },
-    {
-        title: 'Ngày kết thúc',
-        dataIndex: 'ngay_ket_thuc',
-        key: 'ngay_ket_thuc',
-        width: "5%",
-        render: (value, record) => renderDateField(value, record, errorItems, 'Ngày kết thúc', 'ngay_ket_thuc')
-    },
-    { title: 'Trạng thái', dataIndex: 'trang_thai_hop_dong', key: 'trang_thai_hop_dong', width: "5%" },
-    { title: 'Giá trị hợp đồng', dataIndex: 'gia_tri_hop_dong', key: 'gia_tri_hop_dong', width: "6%", render: (value) => value ? value.toLocaleString('vi-VN') : '0'  },
-    { title: 'Đối tác liên quan', dataIndex: 'doi_tac_lien_quan', key: 'doi_tac_lien_quan', width: "12%" },
-    { title: 'Điều khoản thanh toán', dataIndex: 'dieu_khoan_thanh_toan', key: 'dieu_khoan_thanh_toan', width: "10%" },
-    { title: 'Tệp đính kèm', dataIndex: 'tep_dinh_kem', key: 'tep_dinh_kem', width: "6%" }, 
-    { title: 'Vị trí lưu', dataIndex: 'vi_tri_luu_tru', key: 'vi_tri_luu_tru', width: "6%" },
-    {
-      title: 'Người tạo',
-      dataIndex: 'nguoi_tao',
-      key: 'nguoi_tao',
-      width: "8%",
-      render: (maNguoiDung, record) => renderNguoiTao(maNguoiDung, record, accounts, errorItems)
-    },
-    { title: 'Ghi chú', dataIndex: 'ghi_chu', key: 'ghi_chu', width: "12%" },
+    { title: 'Ghi chú', dataIndex: 'ghi_chu', key: 'ghi_chu', width: "10%" },
   ];
 
   // Hàm tải xuống file mẫu
   const handleDownloadTemplate = () => {
     const columns = Object.keys(columnMapping);
     const sampleData = [
-      ['03/2024/HOPT-STORZ', 'Hợp đồng mua bán', '10.06.2025', '10.06.2025', '10.06.2026', 'Còn hiệu lực', '1525000000', 
-        'Công ty THIÊN VƯƠNG', '', '', '', 'Võ Thị Trúc Phương', ''],
-      ['04/2024/HOPT-STORZ', 'Hợp đồng mua bán', '05.07.2025', '', '', 'Hủy bỏ', '', 
-        'Công ty HOA HỒNG ĐEN', 'Trả trước 40%, còn lại chia 2 đợt', '', '', 'Võ Thị Trúc Phương', '']
+      ['KH001', 'Công ty ABC', 'NKH01', 'CH01', '0987654321', 'abc@example.com', 'Hà Nội', 'Tiềm năng', '15000000', '10.06.2025', 'VTTphuong', 'Ghi chú mẫu 1'],
+      ['KH002', 'Công ty XYZ', 'NKH02', 'CH02', '0123456789', 'xyz@example.com', 'TP.HCM', 'Quan tâm', '25000000', '05.07.2025', 'PPcuong', 'Ghi chú mẫu 2']
     ];
-    downloadTemplate(columns, sampleData, 'Template_Hop_Dong');
+    downloadTemplate(columns, sampleData, 'Template_Khach_Hang_Tiem_Nang');
   };
 
   // Hàm render phần tải xuống file mẫu
@@ -287,8 +289,9 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
         setShowPreview,
         setFileList,
         accounts,
-        contract_types,
-        mode: 'hopdong'
+        nhomKhachHang,
+        nguonCoHoi,
+        mode: 'khachHangTN'
       })}
       onRemove={() => resetState()}
       accept=".xlsx,.xls"
@@ -312,7 +315,7 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   // Sử dụng renderPreview
   const renderPreviewSection = () => {
     return renderPreview({
-      label: "Tổng số hợp đồng",
+      label: "Tổng số khách hàng tiềm năng",
       dataSource: parsedData,
       columns: previewColumns,
       errorItems,
@@ -333,7 +336,7 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       className="import-modal"
       title={
         <div className="import-modal-title">
-          <UploadOutlined /> Nhập danh sách hợp đồng từ Excel
+          <UploadOutlined /> Nhập danh sách khách hàng tiềm năng từ Excel
         </div>
       }
       open={open}
@@ -350,11 +353,11 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
               description={
                 <ol>
                   <li>Tải xuống file mẫu Excel hoặc sử dụng file có cấu trúc tương tự.</li>
-                  <li>Điền thông tin hợp đồng vào file (mỗi dòng là một hợp đồng).</li>
+                  <li>Điền thông tin khách hàng tiềm năng vào file (mỗi dòng là một khách hàng).</li>
                   <li>Tải lên file Excel đã điền thông tin.</li>
                   <li>Kiểm tra dữ liệu xem trước và sửa các lỗi nếu có.</li>
                   <li>Nhấn "Nhập dữ liệu" để hoàn tất.</li>
-                  <li>Các trường bắt buộc: Số hợp đồng, Loại hợp đồng, Ngày ký hợp đồng, Đối tác liên quan, Người tạo.</li>
+                  <li>Các trường bắt buộc: Mã khách hàng, Tên khách hàng, Nhóm khách hàng, Nguồn cơ hội, Người phụ trách.</li>
                 </ol>
               }
               type="info"
@@ -379,4 +382,4 @@ const HopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   );
 };
 
-export default HopDong_Import;
+export default KhachHangTN_Import;

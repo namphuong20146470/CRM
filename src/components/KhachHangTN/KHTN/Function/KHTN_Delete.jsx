@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { deleteItemById } from '../../../utils/api/requestHelpers';
+import { crmInstance } from '../../../utils/api/axiosConfig';
 
 const { confirm } = Modal;
 
-const RemoveContract = ({ contractId, onSuccess, onCancel }) => {
+const RemoveKhachHangTN = ({ khachHangId, khachHangName, onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      await deleteItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/contracts/?id=${contractId}`);
-      message.success('Xóa hợp đồng thành công!');
+      await crmInstance.delete(`/potential-customers/${khachHangId}`);
+      message.success('Xóa khách hàng tiềm năng thành công!');
       onSuccess?.();
     } catch (error) {
       console.error('Lỗi khi xóa:', error);
-      message.error(`Không thể xóa hợp đồng: ${error.message}`);
+      message.error(`Không thể xóa khách hàng tiềm năng: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -24,9 +24,9 @@ const RemoveContract = ({ contractId, onSuccess, onCancel }) => {
 
   const showDeleteConfirm = () => {
     confirm({
-      title: 'Xác nhận xóa hợp đồng',
+      title: 'Xác nhận xóa khách hàng tiềm năng',
       icon: <ExclamationCircleOutlined />,
-      content: `Bạn có chắc chắn muốn xóa hợp đồng "${contractId}" không?`,
+      content: `Bạn có chắc chắn muốn xóa khách hàng "${khachHangName}" không?`,
       okText: 'Xóa',
       okType: 'danger',
       cancelText: 'Hủy',
@@ -36,12 +36,12 @@ const RemoveContract = ({ contractId, onSuccess, onCancel }) => {
   };
 
   useEffect(() => {
-    if (contractId) {
+    if (khachHangId) {
       showDeleteConfirm();
     }
-  }, [contractId]);
+  }, [khachHangId]);
 
   return null;
 };
 
-export default RemoveContract;
+export default RemoveKhachHangTN;

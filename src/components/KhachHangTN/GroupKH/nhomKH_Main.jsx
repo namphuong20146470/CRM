@@ -17,20 +17,20 @@ import { sortTableData } from '../../utils/data/sortTable';
 import { hasFullPermission } from '../../utils/auth/permissionUtils';
 
 // Các tính năng
-// import '../nhomKH_Main.css';
-import LoaiHopDong_Import from './Function/nhomKH_Import';
-import LoaiHopDong_Export from './Function/nhomKH_Export';
-import LoaiHopDongTableView from './View/nhomKH_TableView';
-import EditContractType from './Function/nhomKH_Update';
-import AddContractType from './Function/nhomKH_Add';
-import RemoveContractType from './Function/nhomKH_Delete';
+import './nhomKH_Main.css';
+import NhomKH_Import from './Function/nhomKH_Import';
+import NhomKH_Export from './Function/nhomKH_Export';
+import NhomKHTableView from './View/nhomKH_TableView';
+import EditNhomKH from './Function/nhomKH_Update';
+import AddNhomKH from './Function/nhomKH_Add';
+import RemoveNhomKH from './Function/nhomKH_Delete';
 
-const BangLoaiHopDong = () => {
+const BangNhomKH = () => {
     // State lưu dữ liệu bảng và trạng thái chung
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const canEdit = hasFullPermission(undefined, {
-        allowedUsernames: ['VTTphuong', 'PPcuong'] ,// Thêm user này có toàn quyền
+        allowedUsernames: ['VTTphuong', 'PPcuong'], // Thêm user này có toàn quyền
         allowedRoles: ['VT01', 'VT02'], // Thêm role này có toàn quyền
     });
 
@@ -41,40 +41,41 @@ const BangLoaiHopDong = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_cap_nhat');
     const [sortOrder, setSortOrder] = useState('descend');
-    const [editingContractType, setEditingContractType] = useState(null);
-    const [addContractType, setAddContractType] = useState(false);
-    const [deletingContractType, setDeletingContractType] = useState(null);
+    const [editingNhomKH, setEditingNhomKH] = useState(null);
+    const [addNhomKH, setAddNhomKH] = useState(false);
+    const [deletingNhomKH, setDeletingNhomKH] = useState(null);
 
-    // Gọi API lấy danh sách khách hàng bằng hàm tái sử dụng
-    const fetchContractTypes = () => {
+    // Gọi API lấy danh sách nhóm khách hàng bằng hàm tái sử dụng
+    const fetchNhomKH = () => {
         fetchData({
-            endpoint: '/contract-types', // endpoint API
+            endpoint: '/customer-groups', // endpoint CRM API
             setData,                // set state dữ liệu
             setLoading,             // set trạng thái loading
+            apiType: 'crm'          // Chỉ định sử dụng API CRM
         });
     };
 
     // Tự động gọi API khi component mount
     useEffect(() => {
-        fetchContractTypes();
+        fetchNhomKH();
     }, []);
 
     const handleEdit = (record) => {
-        setEditingContractType(record.ma_loai_hop_dong);
+        setEditingNhomKH(record.ma_nhom_khach_hang);
     };
 
     const handleEditClose = () => {
-        setEditingContractType(null);
-        fetchContractTypes();
+        setEditingNhomKH(null);
+        fetchNhomKH();
     };
 
     const handleAddSuccess = () => {
-        setAddContractType(false);
-        fetchContractTypes();
+        setAddNhomKH(false);
+        fetchNhomKH();
     };
 
     const handleRemove = (record) => {
-        setDeletingContractType(record);
+        setDeletingNhomKH(record);
     };
 
     const sortedData = sortField
@@ -87,26 +88,26 @@ const BangLoaiHopDong = () => {
     };
 
     return (
-        <div className="bang-loai-hop-dong-container">
+        <div className="bang-nhom-khach-hang-container">
             <AreaHeader
-                title="Loại Hợp Đồng"
+                title="Nhóm Khách Hàng"
                 onImportClick={() => setShowImportModal(true)}
                 onExportClick={() => setShowExportModal(true)}
-                onAddClick={() => setAddContractType(true)}
+                onAddClick={() => setAddNhomKH(true)}
                 disableImport={!canEdit}
                 disableAdd={!canEdit}
             />
 
-            <LoaiHopDong_Import
+            <NhomKH_Import
                 open={showImportModal}
                 onClose={() => setShowImportModal(false)}
                 onSuccess={() => {
                     setShowImportModal(false);
-                    fetchContractTypes(); // Gọi lại API để cập nhật danh sách sau khi import
+                    fetchNhomKH(); // Gọi lại API để cập nhật danh sách sau khi import
                 }}
             />
 
-            <LoaiHopDong_Export
+            <NhomKH_Export
                 data={data}
                 filteredData={data}
                 sortedData={sortedData}
@@ -114,7 +115,7 @@ const BangLoaiHopDong = () => {
                 onClose={() => setShowExportModal(false)}
             />
 
-            <LoaiHopDongTableView
+            <NhomKHTableView
                 data={sortedData}
                 currentPage={currentPage}
                 pageSize={pageSize}
@@ -141,47 +142,47 @@ const BangLoaiHopDong = () => {
 
             <Modal
                 className="add_update-modal"
-                open={!!editingContractType}
-                onCancel={() => setEditingContractType(null)}
+                open={!!editingNhomKH}
+                onCancel={() => setEditingNhomKH(null)}
                 footer={null}
                 width={1000}
                 destroyOnClose
             >
-                <EditContractType
-                    contract_typeId={editingContractType}
-                    onCancel={() => setEditingContractType(null)}
+                <EditNhomKH
+                    nhomKHId={editingNhomKH}
+                    onCancel={() => setEditingNhomKH(null)}
                     onSuccess={handleEditClose}
                 />
             </Modal>
 
             <Modal
                 className="add_update-modal"
-                open={addContractType}
-                onCancel={() => setAddContractType(false)}
+                open={addNhomKH}
+                onCancel={() => setAddNhomKH(false)}
                 footer={null}
                 width={1000}
                 destroyOnClose
             >
-                <AddContractType
-                    visible={addContractType}
-                    onCancel={() => setAddContractType(false)}
+                <AddNhomKH
+                    visible={addNhomKH}
+                    onCancel={() => setAddNhomKH(false)}
                     onSuccess={handleAddSuccess}
                 />
             </Modal>
 
-            {deletingContractType && (
-                <RemoveContractType
-                    contract_typeId={deletingContractType.ma_loai_hop_dong}
-                    contract_typeName={deletingContractType.ten_loai_hop_dong}
+            {deletingNhomKH && (
+                <RemoveNhomKH
+                    nhomKHId={deletingNhomKH.ma_nhom_khach_hang}
+                    nhomKHName={deletingNhomKH.nhom_khach_hang}
                     onSuccess={() => {
-                        setDeletingContractType(null);
-                        fetchContractTypes();
+                        setDeletingNhomKH(null);
+                        fetchNhomKH();
                     }}
-                    onCancel={() => setDeletingContractType(null)}
+                    onCancel={() => setDeletingNhomKH(null)}
                 />
             )}
         </div>
     );
 };
 
-export default BangLoaiHopDong;
+export default BangNhomKH;

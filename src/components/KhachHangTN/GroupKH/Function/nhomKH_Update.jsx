@@ -1,38 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, message, Select, DatePicker, Spin, Row, Col } from 'antd';
+import { Form, Input, Button, message, Select, DatePicker, Spin, Row, Col } from 'antd';
 import { SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { fetchDataList, updateItemById } from '../../../utils/api/requestHelpers';
 import { fetchAndSetList } from '../../../utils/api/fetchHelpers';
 import '../../../utils/css/Custom-Update.css';
+import { crmInstance } from '../../../utils/api/axiosConfig';
 
 const { Option } = Select;
 
-const EditContractType = ({ contract_typeId, onCancel, onSuccess }) => {
+const EditNhomKH = ({ nhomKHId, onCancel, onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
-  const [contract_typeData, setContractTypeData] = useState(null);
+  const [nhomKHData, setNhomKHData] = useState(null);
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    if (contract_typeId) fetchContractTypeData(contract_typeId);
+    if (nhomKHId) fetchNhomKHData(nhomKHId);
     fetchAndSetList('https://dx.hoangphucthanh.vn:3000/warehouse/accounts', setAccounts, 'Không thể tải danh sách người dùng');
-  }, [contract_typeId]);
+  }, [nhomKHId]);
 
-  const fetchContractTypeData = async (id) => {
+  const fetchNhomKHData = async (id) => {
     setFetchLoading(true);
     try {
-      const allContractTypes = await fetchDataList('https://dx.hoangphucthanh.vn:3000/warehouse/contract-types');
-      const contract_type = allContractTypes.find(item => item.ma_loai_hop_dong === id);
-      if (!contract_type) throw new Error(`Không tìm thấy loại hợp đồng với mã: ${id}`);
-      if (contract_type.ngay_cap_nhat) contract_type.ngay_cap_nhat = moment(contract_type.ngay_cap_nhat);
-      setContractTypeData(contract_type);
-      form.setFieldsValue(contract_type);
-      message.success(`Đã tải thông tin loại hợp đồng: ${contract_type.ten_loai_hop_dong}`);
+      const response = await crmInstance.get(`/customer-groups/${id}`);
+      const nhomKH = response.data;
+      
+      if (!nhomKH) throw new Error(`Không tìm thấy nhóm khách hàng với mã: ${id}`);
+      
+      // Format date if it exists
+      if (nhomKH.ngay_cap_nhat) {
+        nhomKH.ngay_cap_nhat = moment(nhomKH.ngay_cap_nhat);
+      } else {
+        // Set today's date if no date exists
+        nhomKH.ngay_cap_nhat = moment();
+      }
+      
+      setNhomKHData(nhomKH);
+      form.setFieldsValue(nhomKH);
+      message.success(`Đã tải thông tin nhóm khách hàng: ${nhomKH.nhom_khach_hang}`);
     } catch (error) {
       console.error('Lỗi tải dữ liệu:', error);
-      message.error(error.message);
+      message.error(`Không thể tải thông tin: ${error.message}`);
     } finally {
       setFetchLoading(false);
     }
@@ -41,14 +50,17 @@ const EditContractType = ({ contract_typeId, onCancel, onSuccess }) => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
+      // Extract ma_nhom_khach_hang from values to ensure it's not modified in the payload
+      const { ma_nhom_khach_hang, ...updateData } = values;
+      
       const payload = {
-        ...values,
+        ...updateData,
         ngay_cap_nhat: values.ngay_cap_nhat ? moment(values.ngay_cap_nhat).format('YYYY-MM-DD') : null,
       };
 
       console.log('🚀 Payload gửi đi:', payload);
 
-      const response = await updateItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/contract-types/${contract_typeId}`, payload);
+      const response = await crmInstance.put(`/customer-groups/${nhomKHId}`, payload);
 
       console.log('📦 Kết quả cập nhật:', response);
 
@@ -57,11 +69,11 @@ const EditContractType = ({ contract_typeId, onCancel, onSuccess }) => {
         throw new Error('Cập nhật thất bại từ server');
       }
 
-      message.success('Cập nhật loại hợp đồng thành công!');
+      message.success('Cập nhật nhóm khách hàng thành công!');
       onSuccess?.();
     } catch (error) {
       console.error('❌ Lỗi cập nhật:', error);
-      message.error('Không thể cập nhật loại hợp đồng');
+      message.error('Không thể cập nhật nhóm khách hàng');
     } finally {
       setLoading(false);
     }
@@ -76,35 +88,36 @@ const EditContractType = ({ contract_typeId, onCancel, onSuccess }) => {
         ) : (
           <>
             <h2 className="edit-title" style={{ marginBottom: 24 }}>
-              Chỉnh sửa Loại Hợp Đồng: {contract_typeData?.ten_loai_hop_dong || contract_typeId}
+              Chỉnh sửa Nhóm Khách Hàng: {nhomKHData?.nhom_khach_hang || nhomKHId}
             </h2>
             <Form form={form} layout="vertical" onFinish={onFinish} className="edit-form">
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item name="ma_loai_hop_dong" label="Mã loại hợp đồng" rules={[{ required: true }]}>
-                    <Input disabled />
+                  <Form.Item 
+                    name="ma_nhom_khach_hang" 
+                    label="Mã nhóm khách hàng"
+                    extra={`Mã nhóm: ${nhomKHData?.ma_nhom_khach_hang || nhomKHId}`}
+                  >
+                    <Input disabled style={{ color: '#000', fontWeight: 'bold' }} />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item name="ten_loai_hop_dong" label="Tên loại hợp đồng" rules={[{ required: true }]}>
+                  <Form.Item 
+                    name="nhom_khach_hang" 
+                    label="Tên nhóm khách hàng" 
+                    rules={[{ required: true, message: 'Tên nhóm khách hàng không được để trống' }]}
+                  >
                     <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item name="tinh_trang" label="Trạng thái" rules={[{ required: true }]}>
-                    <Select>
-                      {['Hoạt động', 'Dừng'].map(status => (
-                        <Option key={status} value={status}>{status}</Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item name="nguoi_cap_nhat" label="Người cập nhật" rules={[{ required: true }]}>
+                  <Form.Item 
+                    name="nguoi_cap_nhat" 
+                    label="Người cập nhật" 
+                    rules={[{ required: true, message: 'Vui lòng chọn người cập nhật' }]}
+                  >
                     <Select showSearch optionFilterProp="children" placeholder="Chọn người cập nhật">
                       {accounts.map(account => (
                         <Option key={account.ma_nguoi_dung} value={account.ma_nguoi_dung}>
@@ -115,8 +128,12 @@ const EditContractType = ({ contract_typeId, onCancel, onSuccess }) => {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item name="ngay_cap_nhat" label="Ngày cập nhật" rules={[{ required: true }]}>
-                    <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} disabled />
+                  <Form.Item 
+                    name="ngay_cap_nhat" 
+                    label="Ngày cập nhật"
+                    rules={[{ required: true, message: 'Ngày cập nhật không được để trống' }]}
+                  >
+                    <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -134,4 +151,4 @@ const EditContractType = ({ contract_typeId, onCancel, onSuccess }) => {
   );
 };
 
-export default EditContractType;
+export default EditNhomKH;

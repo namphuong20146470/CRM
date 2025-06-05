@@ -8,19 +8,18 @@ import { downloadTemplate } from '../../../utils/import/templateHelpers';
 import TemplateDownloadSection from '../../../utils/import/templateDownloadSection';
 import {
   fetchPreviewData,
-  renderMaLoaiHopDong,
-  renderTenLoaiHopDong,
+  renderMaNhomKH,
   renderNguoiCapNhat,
-  isContractTypeExisting,
+  isNhomKHExisting,
 } from './nhomKH_ImportRender';
 import renderPreview from '../../../utils/import/renderPreview';
-import { createItem } from '../../../utils/api/requestHelpers';
+import { crmInstance } from '../../../utils/api/axiosConfig';
 
 const { Dragger } = Upload;
 
-const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
+const NhomKH_Import = ({ open, onClose, onSuccess, disabled }) => {
   // State quản lý dữ liệu
-  const [existingContractTypes, setExistingContractTypes] = useState([]);
+  const [existingNhomKH, setExistingNhomKH] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [parsedData, setParsedData] = useState([]);
@@ -29,53 +28,21 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
-    fetchPreviewData(setAccounts, setExistingContractTypes);
+    fetchPreviewData(setAccounts, setExistingNhomKH);
     resetState();
   }, [open]);
 
-  // Hàm sinh mã hợp đồng mới
-  const generateMaLoaiHopDong = (() => {
-    let base = null;
-    return (index = 0) => {
-      if (base === null) {
-        let maxNumber = 0;
-        existingContractTypes.forEach(item => {
-          if (item.ma_loai_hop_dong) {
-            const match = item.ma_loai_hop_dong.match(/^LHD(\d+)$/);
-            if (match) {
-              const num = parseInt(match[1], 10);
-              if (num > maxNumber) maxNumber = num;
-            }
-          }
-        });
-        base = maxNumber;
-      }
-      return `LHD${String(base + index + 1).padStart(3, '0')}`;
-    };
-  })();
-
-  // Hàm xử lý sau khi parse file Excel
-  const handleAfterParse = (parsedRows) => {
-    // Gán mã hợp đồng tự động cho từng dòng
-    const dataWithMaLH = parsedRows.map((row, idx) => ({
-      ...row,
-      ma_loai_hop_dong: generateMaLoaiHopDong(idx)
-    }));
-    setParsedData(dataWithMaLH);
-    handleValidateData(dataWithMaLH);
-    setShowPreview(true);
-  };
-
   // Mapping giữa tiêu đề cột Excel và các trường API
   const columnMapping = {
-    'Loại hợp đồng': 'ten_loai_hop_dong',
+    'Mã nhóm khách hàng': 'ma_nhom_khach_hang',
+    'Tên nhóm khách hàng': 'nhom_khach_hang',
     'Người cập nhật': 'nguoi_cap_nhat',
-    'Mô tả': 'mo_ta',
+    'Mô tả': 'mo_ta'
   };
 
   // Các trường bắt buộc
-  const requiredFields = ['ten_loai_hop_dong', 'nguoi_cap_nhat'];
-  const uniqueFields = ['ten_loai_hop_dong'];
+  const requiredFields = ['ma_nhom_khach_hang', 'nhom_khach_hang', 'nguoi_cap_nhat'];
+  const uniqueFields = ['ma_nhom_khach_hang'];
 
   // Hàm xác thực dữ liệu
   const handleValidateData = (data) => {
@@ -87,10 +54,10 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       requiredFields,
       (field) => getFieldLabel(field, columnMapping),
       setErrorItems,
-      'ma_loai_hop_dong',
-      'ten_loai_hop_dong',
+      'ma_nhom_khach_hang',
+      'ma_nhom_khach_hang',
       {
-        ten_loai_hop_dong: (value) => isContractTypeExisting(value, existingContractTypes),
+        ma_nhom_khach_hang: (value) => isNhomKHExisting(value, existingNhomKH),
       },
       duplicates // truyền vào validateData
     );
@@ -109,8 +76,8 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   // Hàm nhập từng dòng
   const importSingleItem = async (item) => {
     try {
-      const result = await createItem('https://dx.hoangphucthanh.vn:3000/warehouse/contract-types', item);
-      return result?.success;
+      const response = await crmInstance.post('/customer-groups', item);
+      return response.status < 400;
     } catch (error) {
       console.error('Lỗi khi nhập từng item:', error);
       return false;
@@ -120,8 +87,8 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   // Hàm nhập toàn bộ dữ liệu
   const importAllItems = async (data) => {
     try {
-      const result = await createItem('https://dx.hoangphucthanh.vn:3000/warehouse/contract-types', data);
-      return result?.success;
+      const response = await crmInstance.post('/customer-groups/batch', data);
+      return response.status < 400;
     } catch (error) {
       console.error('Error importing data:', error);
       throw error;
@@ -149,8 +116,8 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       const success = await importAllItems(dataToImport);
 
       if (success) {
-        message.success(`Đã nhập ${dataToImport.length} loại hợp đồng thành công!`);
-        fetchPreviewData(setAccounts, setExistingContractTypes);
+        message.success(`Đã nhập ${dataToImport.length} nhóm khách hàng thành công!`);
+        fetchPreviewData(setAccounts, setExistingNhomKH);
         resetState();
         onSuccess?.();
         onClose();
@@ -160,7 +127,7 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       throw new Error('Có lỗi xảy ra khi nhập dữ liệu');
     } catch (error) {
       message.error(`Không thể nhập dữ liệu: ${error.message}`);
-      message.info('Thử một cách khác - tạo từng hợp đồng một...');
+      message.info('Thử một cách khác - tạo từng nhóm khách hàng một...');
 
       // Thử nhập từng dòng
       let successCount = 0;
@@ -170,11 +137,11 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       }
 
       if (successCount > 0) {
-        message.success(`Đã nhập ${successCount}/${parsedData.length} hợp đồng thành công!`);
+        message.success(`Đã nhập ${successCount}/${parsedData.length} nhóm khách hàng thành công!`);
       } else {
-        message.error('Không thể nhập được hợp đồng nào!');
+        message.error('Không thể nhập được nhóm khách hàng nào!');
       }
-      fetchPreviewData(setAccounts, setExistingContractTypes);
+      fetchPreviewData(setAccounts, setExistingNhomKH);
       resetState();
       onSuccess?.();
       onClose();
@@ -189,7 +156,6 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
     setParsedData([]);
     setErrorItems([]);
     setShowPreview(false);
-    generateMaLoaiHopDong.base = null;
   };
 
   // Hàm đóng modal
@@ -204,39 +170,37 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       render: (text) => text + 1 
     },
     { 
-      title: 'Mã hợp đồng', 
-      dataIndex: 'ma_loai_hop_dong', 
-      key: 'ma_loai_hop_dong', 
-      width: "10%",
-      render: (text, record) => renderMaLoaiHopDong(text, record, errorItems, existingContractTypes)
+      title: 'Mã nhóm khách hàng', 
+      dataIndex: 'ma_nhom_khach_hang', 
+      key: 'ma_nhom_khach_hang', 
+      width: "15%",
+      render: (text, record) => renderMaNhomKH(text, record, errorItems, existingNhomKH)
     },
     { 
-      title: 'Loại hợp đồng', 
-      dataIndex: 'ten_loai_hop_dong', 
-      key: 'ten_loai_hop_dong', 
+      title: 'Tên nhóm khách hàng', 
+      dataIndex: 'nhom_khach_hang', 
+      key: 'nhom_khach_hang', 
       width: "20%",
-      render: (text, record) => renderTenLoaiHopDong(text, record, errorItems, existingContractTypes)
     },
-    { title: 'Tình trạng', dataIndex: 'tinh_trang', key: 'tinh_trang', width: "10%" },
     {
       title: 'Người cập nhật',
       dataIndex: 'nguoi_cap_nhat',
       key: 'nguoi_cap_nhat',
-      width: "20%",
+      width: "25%",
       render: (maNguoiDung, record) => renderNguoiCapNhat(maNguoiDung, record, accounts, errorItems)
     },
     { title: 'Ngày cập nhật', dataIndex: 'ngay_cap_nhat', key: 'ngay_cap_nhat', width: "10%" },
-    { title: 'Mô tả', dataIndex: 'mo_ta', key: 'mo_ta', width: "28%" },
+    { title: 'Mô tả', dataIndex: 'mo_ta', key: 'mo_ta', width: "20%" },
   ];
 
   // Hàm tải xuống file mẫu
   const handleDownloadTemplate = () => {
     const columns = Object.keys(columnMapping);
     const sampleData = [
-      ['Hợp đồng bảo hành', 'Võ Thị Trúc Phương', ''],
-      ['Hợp đồng mua bán', 'Võ Thị Trúc Phương', '']
+      ['NKH01', 'Khách hàng VIP', 'PPcuong', 'Khách hàng quan trọng'],
+      ['NKH02', 'Khách hàng thường', 'VTTphuong', 'Khách hàng bình thường']
     ];
-    downloadTemplate(columns, sampleData, 'Template_Loai_Hop_Dong');
+    downloadTemplate(columns, sampleData, 'Template_NhomKhachHang');
   };
 
   // Hàm render phần tải xuống file mẫu
@@ -252,13 +216,13 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       fileList={fileList}
       beforeUpload={(file) => handleFileUpload(file, {
         columnMapping,
-        setParsedData: handleAfterParse, // Dùng hàm mới
-        validateData: () => {}, // validate sau khi setParsedData
+        setParsedData,
+        validateData: handleValidateData,
         setShowPreview,
         setFileList,
         accounts,
-        defaultFields: { tinh_trang: 'Hoạt động', ngay_cap_nhat: moment().format('YYYY-MM-DD') },
-        mode: 'loaihopdong'
+        defaultFields: { ngay_cap_nhat: moment().format('YYYY-MM-DD') },
+        mode: 'nhomKH'
       })}
       onRemove={() => resetState()}
       accept=".xlsx,.xls"
@@ -282,7 +246,7 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   // Sử dụng renderPreview
   const renderPreviewSection = () => {
     return renderPreview({
-      label: "Tổng số hợp đồng",
+      label: "Tổng số nhóm khách hàng",
       dataSource: parsedData,
       columns: previewColumns,
       errorItems,
@@ -290,7 +254,7 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
       onImport: handleImport,
       importLoading,
       hasErrors: errorItems.length > 0,
-      scrollX: 1080, // Giá trị cuộn ngang
+      scrollX: 800, // Giá trị cuộn ngang
       pageSize: 20, // Số lượng hàng trên mỗi trang
       getErrorTitle, // Truyền hàm lấy tiêu đề lỗi
       getErrorDescription, // Truyền hàm lấy mô tả lỗi
@@ -300,16 +264,16 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
 
   return (
     <Modal
-    className="import-modal"
+      className="import-modal"
       title={
         <div className="import-modal-title">
-          <UploadOutlined /> Nhập danh sách hợp đồng từ Excel
+          <UploadOutlined /> Nhập danh sách nhóm khách hàng từ Excel
         </div>
       }
       open={open}
       onCancel={handleClose}
       footer={null}
-      width={1200}
+      width={1000}
       destroyOnClose
     >
       <Spin spinning={importLoading} tip="Đang nhập dữ liệu...">
@@ -320,11 +284,11 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
               description={
                 <ol>
                   <li>Tải xuống file mẫu Excel hoặc sử dụng file có cấu trúc tương tự.</li>
-                  <li>Điền thông tin hợp đồng vào file (mỗi dòng là một hợp đồng).</li>
+                  <li>Điền thông tin nhóm khách hàng vào file (mỗi dòng là một nhóm).</li>
                   <li>Tải lên file Excel đã điền thông tin.</li>
                   <li>Kiểm tra dữ liệu xem trước và sửa các lỗi nếu có.</li>
                   <li>Nhấn "Nhập dữ liệu" để hoàn tất.</li>
-                  <li>Các trường bắt buộc: Loại hợp đồng, Người cập nhật.</li>
+                  <li>Các trường bắt buộc: Mã nhóm khách hàng, Tên nhóm khách hàng, Người cập nhật.</li>
                 </ol>
               }
               type="info"
@@ -349,4 +313,4 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
   );
 };
 
-export default LoaiHopDong_Import;
+export default NhomKH_Import;

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { deleteItemById } from '../../../utils/api/requestHelpers';
+import { crmInstance } from '../../../utils/api/axiosConfig';
 
 const { confirm } = Modal;
 
-const RemoveContractType = ({ contract_typeId, contract_typeName, onSuccess, onCancel }) => {
+const RemoveNhomKH = ({ nhomKHId, nhomKHName, onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      await deleteItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/contract-types/${contract_typeId}`);
-      message.success('Xóa loại hợp đồng thành công!');
+      await crmInstance.delete(`/customer-groups/${nhomKHId}`);
+      message.success('Xóa nhóm khách hàng thành công!');
       onSuccess?.();
     } catch (error) {
       console.error('Lỗi khi xóa:', error);
-      message.error(`Không thể xóa loại hợp đồng: ${error.message}`);
+      message.error(`Không thể xóa nhóm khách hàng: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -24,9 +24,9 @@ const RemoveContractType = ({ contract_typeId, contract_typeName, onSuccess, onC
 
   const showDeleteConfirm = () => {
     confirm({
-      title: 'Xác nhận xóa loại hợp đồng',
+      title: 'Xác nhận xóa nhóm khách hàng',
       icon: <ExclamationCircleOutlined />,
-      content: `Bạn có chắc chắn muốn xóa loại hợp đồng "${contract_typeName}" không?`,
+      content: `Bạn có chắc chắn muốn xóa nhóm khách hàng "${nhomKHName}" không?`,
       okText: 'Xóa',
       okType: 'danger',
       cancelText: 'Hủy',
@@ -36,12 +36,12 @@ const RemoveContractType = ({ contract_typeId, contract_typeName, onSuccess, onC
   };
 
   useEffect(() => {
-    if (contract_typeId && contract_typeName) {
+    if (nhomKHId && nhomKHName) {
       showDeleteConfirm();
     }
-  }, [contract_typeId, contract_typeName]);
+  }, [nhomKHId, nhomKHName]);
 
   return null;
 };
 
-export default RemoveContractType;
+export default RemoveNhomKH;

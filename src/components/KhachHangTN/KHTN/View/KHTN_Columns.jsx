@@ -1,31 +1,46 @@
 import { Button, Space, Tag } from 'antd';
 import { formatDate } from '../../../utils/format/formatDate';
 
-export const getHopDongColumns = (handleEdit, handleRemove, canEdit) => [
+export const getKhachHangTNColumns = (handleEdit, handleRemove, canEdit) => [
     { title: 'STT', dataIndex: 'stt', key: 'stt', width: "3%" },
-    { title: 'Số hợp đồng', dataIndex: 'so_hop_dong', key: 'so_hop_dong', width: "10%", sorter: (a, b) => (a.so_hop_dong || '').localeCompare(b.so_hop_dong || '') },
+    { title: 'Mã KH', dataIndex: 'ma_khach_hang', key: 'ma_khach_hang', width: "8%", sorter: (a, b) => (a.ma_khach_hang || '').localeCompare(b.ma_khach_hang || '') },
+    { title: 'Tên khách hàng', dataIndex: 'ten_khach_hang', key: 'ten_khach_hang', width: "12%", sorter: (a, b) => (a.ten_khach_hang || '').localeCompare(b.ten_khach_hang || '') },
     { 
-        title: 'Loại hợp đồng', 
-        dataIndex: ['contract_type', 'ten_loai_hop_dong'], 
-        key: 'loai_hop_dong', 
-        width: "8%", 
+        title: 'Nhóm khách hàng', 
+        dataIndex: ['customer_group', 'nhom_khach_hang'], 
+        key: 'nhom_khach_hang', 
+        width: "10%", 
         sorter: (a, b) => {
-            const aName = a.contract_type?.ten_loai_hop_dong || '';
-            const bName = b.contract_type?.ten_loai_hop_dong || '';
+            const aName = a.customer_group?.nhom_khach_hang || '';
+            const bName = b.customer_group?.nhom_khach_hang || '';
             return aName.localeCompare(bName, 'vi');
         }
     },
-    { title: 'Trạng thái', dataIndex: 'trang_thai_hop_dong', key: 'trang_thai_hop_dong', width: "5%", 
+    { 
+        title: 'Nguồn cơ hội', 
+        dataIndex: ['opportunity_source', 'nguon'], 
+        key: 'nguon_co_hoi', 
+        width: "10%", 
+        sorter: (a, b) => {
+            const aName = a.opportunity_source?.nguon || '';
+            const bName = b.opportunity_source?.nguon || '';
+            return aName.localeCompare(bName, 'vi');
+        }
+    },
+    { title: 'Trạng thái', dataIndex: 'trang_thai', key: 'trang_thai', width: "7%", 
         render: (status) => {
             let color = '';
             switch (status) {
-                case 'Đang thực hiện':
+                case 'Tiềm năng':
                     color = 'orange';
                     break;
-                case 'Còn hiệu lực':
+                case 'Quan tâm':
                     color = 'blue';
                     break;
-                case 'Hết hạn':
+                case 'Đã chuyển đổi':
+                    color = 'green';
+                    break;
+                case 'Đã hủy':
                     color = 'red';
                     break;
                 default:
@@ -40,44 +55,40 @@ export const getHopDongColumns = (handleEdit, handleRemove, canEdit) => [
                         padding: '2px 4px', 
                         fontWeight: 'bold', 
                         display: 'inline-block', 
-                        textAlign: 'center', // Căn giữa chữ trong Tag
-                        width: '100%' // Đảm bảo Tag chiếm toàn bộ chiều rộng của ô
+                        textAlign: 'center',
+                        width: '100%'
                     }}
                 >
                     {status || 'N/A'}
                 </Tag>
             );
         },
-        sorter: (a, b) => (a.trang_thai_hop_dong || '').localeCompare(b.trang_thai_hop_dong || '')
+        sorter: (a, b) => (a.trang_thai || '').localeCompare(b.trang_thai || '')
     },
+    { title: 'SĐT', dataIndex: 'so_dien_thoai', key: 'so_dien_thoai', width: "8%" },
+    { title: 'Email', dataIndex: 'email', key: 'email', width: "10%" },
+    { title: 'Địa chỉ', dataIndex: 'dia_chi', key: 'dia_chi', width: "12%" },
     {
-        title: 'Ngày ký hợp đồng',
-        dataIndex: 'ngay_ky_hop_dong',
-        key: 'ngay_ky_hop_dong',
+        title: 'Ngày tạo',
+        dataIndex: 'ngay_tao',
+        key: 'ngay_tao',
         render: (text) => formatDate(text),
-        width: "5%",
-        sorter: (a, b) => new Date(a.ngay_ky_hop_dong) - new Date(b.ngay_ky_hop_dong),
+        width: "7%",
+        sorter: (a, b) => new Date(a.ngay_tao) - new Date(b.ngay_tao),
         defaultSortOrder: 'descend',
     },
-    {
-        title: 'Ngày bắt đầu',
-        dataIndex: 'ngay_bat_dau',
-        key: 'ngay_bat_dau',
-        render: (text) => formatDate(text),
-        width: "5%",
-        sorter: (a, b) => new Date(a.ngay_bat_dau) - new Date(b.ngay_bat_dau),
+    { title: 'Doanh thu dự kiến', dataIndex: 'doanh_thu_du_kien', key: 'doanh_thu_du_kien', render: (value) => value?.toLocaleString('vi-VN'), width: "8%", sorter: (a, b) => (Number(a.doanh_thu_du_kien) || 0) - (Number(b.doanh_thu_du_kien) || 0) },
+    { 
+        title: 'Người phụ trách', 
+        dataIndex: ['accounts', 'ho_va_ten'], 
+        key: 'nguoi_phu_trach', 
+        width: "10%", 
+        sorter: (a, b) => {
+            const aName = a.accounts?.ho_va_ten || '';
+            const bName = b.accounts?.ho_va_ten || '';
+            return aName.localeCompare(bName, 'vi');
+        }
     },
-    {
-        title: 'Ngày kết thúc',
-        dataIndex: 'ngay_ket_thuc',
-        key: 'ngay_ket_thuc',
-        render: (text) => formatDate(text),
-        width: "5%",
-        sorter: (a, b) => new Date(a.ngay_ket_thuc) - new Date(b.ngay_ket_thuc),
-    },
-    { title: 'Giá trị hợp đồng', dataIndex: 'gia_tri_hop_dong', key: 'gia_tri_hop_dong', render: (value) => value?.toLocaleString('vi-VN'), width: "6%", sorter: (a, b) => (Number(a.gia_tri_hop_dong) || 0) - (Number(b.gia_tri_hop_dong) || 0) },
-    { title: 'Đối tác liên quan', dataIndex: 'doi_tac_lien_quan', key: 'doi_tac_lien_quan', width: "12%" },
-    { title: 'Điều khoản thanh toán', dataIndex: 'dieu_khoan_thanh_toan', key: 'dieu_khoan_thanh_toan', width: "10%" },
     {
         title: 'Hành động',
         key: 'hanh_dong',
@@ -87,20 +98,7 @@ export const getHopDongColumns = (handleEdit, handleRemove, canEdit) => [
                 <Button type="primary" danger size="small" disabled={!canEdit} onClick={() => handleRemove(record)}>Xóa</Button>
             </Space>
         ),
-        width: "5%",
+        width: "7%",
     },
-    { title: 'Tệp đính kèm', dataIndex: 'tep_dinh_kem', key: 'tep_dinh_kem', width: "6%" }, 
-    { title: 'Vị trí lưu', dataIndex: 'vi_tri_luu_tru', key: 'vi_tri_luu_tru', width: "6%" },
-    { 
-        title: 'Người tạo', 
-        dataIndex: ['accounts', 'ho_va_ten'], 
-        key: 'nguoi_tao', 
-        width: "7%", 
-        sorter: (a, b) => {
-            const aName = a.accounts?.ho_va_ten || '';
-            const bName = b.accounts?.ho_va_ten || '';
-            return aName.localeCompare(bName, 'vi');
-        }
-    },
-    { title: 'Ghi chú', dataIndex: 'ghi_chu', key: 'ghi_chu', width: "7%" },
+    { title: 'Ghi chú', dataIndex: 'ghi_chu', key: 'ghi_chu', width: "10%" },
 ];

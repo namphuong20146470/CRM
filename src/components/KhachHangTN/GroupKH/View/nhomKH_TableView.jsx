@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table } from 'antd';
-import { getLoaiHopDongColumns } from './nhomKH_Columns';
+import { getNhomKHColumns } from './nhomKH_Columns';
 import '../nhomKH_Main.css';
 
-const LoaiHopDongTableView = ({
+const NhomKHTableView = ({
     data,
     currentPage,
     pageSize,
@@ -16,7 +16,7 @@ const LoaiHopDongTableView = ({
     sortOrder,
 }) => {
     // Lấy columns gốc
-    let columns = getLoaiHopDongColumns(handleEdit, handleRemove, canEdit);
+    let columns = getNhomKHColumns(handleEdit, handleRemove, canEdit);
 
     // Gắn sortOrder cho đúng cột đang sort
     columns = columns.map(col =>
@@ -29,7 +29,7 @@ const LoaiHopDongTableView = ({
         <Table
             columns={columns}
             dataSource={data.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
-            rowKey="ma_loai_hop_dong"
+            rowKey="ma_nhom_khach_hang"
             bordered
             size="small"
             pagination={false}
@@ -47,4 +47,4 @@ const LoaiHopDongTableView = ({
     );
 };
 
-export default LoaiHopDongTableView;
+export default NhomKHTableView;

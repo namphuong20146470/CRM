@@ -7,39 +7,58 @@ import '../../../utils/css/Custom-Export.css';
 
 const { TabPane } = Tabs;
 
-function HopDong_Export({ data, filteredData, sortedData, onClose, visible }) {
+function KhachHangTN_Export({ data, filteredData, sortedData, onClose, visible }) {
   const [exporting, setExporting] = useState(false);
   const [activeTab, setActiveTab] = useState('1');
 
+  // Định nghĩa mapping giữa tên trường và tiêu đề cột trong file xuất
   const fieldMappings = {
     stt: 'STT',
-    so_hop_dong: 'Số hợp đồng',
-    loai_hop_dong: 'Loại hợp đồng',
-    trang_thai_hop_dong: 'Trạng thái',
-    ngay_ky_hop_dong: 'Ngày ký hợp đồng',
-    ngay_bat_dau: 'Ngày bắt đầu',
-    ngay_ket_thuc: 'Ngày kết thúc',
-    gia_tri_hop_dong: 'Giá trị hợp đồng',
-    doi_tac_lien_quan: 'Đối tác liên quan',
-    dieu_khoan_thanh_toan: 'Điều khoản thanh toán',
-    tep_dinh_kem: 'Tệp đính kèm',
-    vi_tri_luu_tru: 'Vị trí lưu',
-    nguoi_tao: 'Người tạo',
+    ma_khach_hang: 'Mã khách hàng',
+    ten_khach_hang: 'Tên khách hàng',
+    'customer_group.nhom_khach_hang': 'Nhóm khách hàng',
+    'opportunity_source.nguon': 'Nguồn cơ hội',
+    trang_thai: 'Trạng thái',
+    so_dien_thoai: 'Số điện thoại',
+    email: 'Email',
+    dia_chi: 'Địa chỉ',
+    ngay_tao: 'Ngày tạo',
+    doanh_thu_du_kien: 'Doanh thu dự kiến',
+    'accounts.ho_va_ten': 'Người phụ trách',
     ghi_chu: 'Ghi chú'
+  };
+
+  // Xử lý dữ liệu trước khi xuất để xử lý các trường lồng nhau
+  const processRowForExport = (row) => {
+    return {
+      stt: row.stt,
+      ma_khach_hang: row.ma_khach_hang,
+      ten_khach_hang: row.ten_khach_hang,
+      'customer_group.nhom_khach_hang': row.customer_group?.nhom_khach_hang || '',
+      'opportunity_source.nguon': row.opportunity_source?.nguon || '',
+      trang_thai: row.trang_thai,
+      so_dien_thoai: row.so_dien_thoai,
+      email: row.email,
+      dia_chi: row.dia_chi,
+      ngay_tao: row.ngay_tao,
+      doanh_thu_du_kien: row.doanh_thu_du_kien,
+      'accounts.ho_va_ten': row.accounts?.ho_va_ten || '',
+      ghi_chu: row.ghi_chu
+    };
   };
 
   const [exportOptions, setExportOptions] = useState({
     dataSource: 'sorted',
     fileFormat: 'xlsx',
     exportFields: Object.keys(fieldMappings),
-    fileName: `hop_dong_${new Date().toISOString().split('T')[0]}`,
+    fileName: `khach_hang_tiem_nang_${new Date().toISOString().split('T')[0]}`,
     includeHeaderRow: true
   });
 
   return (
     <Modal
       className="export-modal"
-      title={<div className="export-modal-title"><FileExcelOutlined /> Xuất dữ liệu hợp đồng</div>}
+      title={<div className="export-modal-title"><FileExcelOutlined /> Xuất dữ liệu khách hàng tiềm năng</div>}
       open={visible}
       onCancel={onClose}
       width={700}
@@ -51,8 +70,14 @@ function HopDong_Export({ data, filteredData, sortedData, onClose, visible }) {
           icon={<DownloadOutlined />}
           onClick={() => {
             setExporting(true);
-            handleExport({ exportOptions, data, filteredData, sortedData, fieldMappings, onClose })
-              .finally(() => setExporting(false));
+            handleExport({ 
+              exportOptions, 
+              data: data.map(processRowForExport), 
+              filteredData: filteredData.map(processRowForExport), 
+              sortedData: sortedData.map(processRowForExport), 
+              fieldMappings, 
+              onClose 
+            }).finally(() => setExporting(false));
           }}
           loading={exporting}
           disabled={exportOptions.exportFields.length === 0}
@@ -83,4 +108,4 @@ function HopDong_Export({ data, filteredData, sortedData, onClose, visible }) {
   );
 }
 
-export default HopDong_Export;
+export default KhachHangTN_Export;

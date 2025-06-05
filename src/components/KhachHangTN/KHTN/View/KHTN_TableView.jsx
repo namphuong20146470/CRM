@@ -1,9 +1,9 @@
 import React from 'react';
-import { Table } from 'antd';
-import { getHopDongColumns } from './KHTN_Columns';
+import { Table, Switch } from 'antd';
+import { getKhachHangTNColumns } from './KHTN_Columns';
 import '../KHTN_Main.css';
 
-const HopDongTableView = ({
+const KhachHangTNTableView = ({
     data,
     currentPage,
     pageSize,
@@ -14,9 +14,10 @@ const HopDongTableView = ({
     onSortChange,
     sortField,
     sortOrder,
+    showAllRecords = false, // New prop to control whether to show all records
 }) => {
     // Lấy columns gốc
-    let columns = getHopDongColumns(handleEdit, handleRemove, canEdit);
+    let columns = getKhachHangTNColumns(handleEdit, handleRemove, canEdit);
 
     // Gắn sortOrder cho đúng cột đang sort
     columns = columns.map(col =>
@@ -25,13 +26,18 @@ const HopDongTableView = ({
             : { ...col, sortOrder: undefined }
     );
 
+    // If showAllRecords is true, display all data; otherwise, use pagination
+    const displayData = showAllRecords 
+        ? data 
+        : data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
     return (
-        <div className="bang-hop-dong-scroll-wrapper">
+        <div className="bang-khach-hang-scroll-wrapper">
             <div style={{ width: 2000 }}>
                 <Table
                     columns={columns}
-                    dataSource={data.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
-                    rowKey="so_hop_dong"
+                    dataSource={displayData}
+                    rowKey="ma_khach_hang"
                     bordered
                     size="small"
                     pagination={false}
@@ -41,7 +47,7 @@ const HopDongTableView = ({
                         if (sorter && sorter.columnKey && sorter.order) {
                             onSortChange && onSortChange(sorter.columnKey, sorter.order);
                         } else {
-                            onSortChange && onSortChange('ngay_ky_hop_dong', 'descend');
+                            onSortChange && onSortChange('ngay_tao', 'descend');
                         }
                     }}
                     sortDirections={['descend', 'ascend']}
@@ -51,4 +57,4 @@ const HopDongTableView = ({
     );
 };
 
-export default HopDongTableView;
+export default KhachHangTNTableView;
