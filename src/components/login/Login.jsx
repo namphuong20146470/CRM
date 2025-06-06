@@ -83,7 +83,7 @@ function Login() {
 
   // Xử lý khi click "Đây"
   const handleManualMaintenance = () => {
-    window.open('https://dx.hoangphucthanh.vn:3000/maintenance', '_blank');
+    window.open('https://dx.hoangphucthanh.vn:3000', '_blank');
   };
 
   const transparentStyle = {
