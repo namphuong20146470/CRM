@@ -145,16 +145,8 @@ function LayoutApp(props) {
         <Menu.Item key="by_staff" onClick={showComingSoon}>Thống kê KH theo người phụ trách</Menu.Item>
         <Menu.Item key="competitor" onClick={showComingSoon}>Đối thủ mới</Menu.Item>
       </SubMenu>,
-      <SubMenu
-        key="potential_customer"
-        icon={<UserAddOutlined />}
-        title="Khách Hàng Tiềm Năng"
-        onTitleClick={showComingSoon}
-      >
-        <Menu.Item key="/opportunity_source" onClick={showComingSoon}>Nguồn cơ hội</Menu.Item>
-        <Menu.Item key="/customer_group" onClick={showComingSoon}>Nhóm khách hàng</Menu.Item>
-        <Menu.Item key="/potential_customer" onClick={showComingSoon}>Khách hàng tiềm năng</Menu.Item>
-      </SubMenu>,
+
+        //Chung tu
       <SubMenu
         key="contracts"
         icon={<FileTextOutlined />}
@@ -165,7 +157,8 @@ function LayoutApp(props) {
         <Menu.Item key="/contracts"><NavLink to="/system/crm/contracts">Hợp Đồng</NavLink></Menu.Item>
         <Menu.Item key="/bill"><NavLink to="/system/crm/bill">Bill</NavLink></Menu.Item>
       </SubMenu>,
-      <SubMenu
+      //Bao gia
+            <SubMenu
         key="quotations"
         icon={<DollarOutlined />}
         title="Báo Giá"
@@ -175,6 +168,25 @@ function LayoutApp(props) {
         <Menu.Item key="/quotation_type" onClick={showComingSoon}>Loại báo giá</Menu.Item>
         <Menu.Item key="/quotations" onClick={showComingSoon}>Báo giá</Menu.Item>
       </SubMenu>,
+      //Khach hang tiem nang
+      <SubMenu
+        key="potential_customer"
+        icon={<UserAddOutlined />}
+        title="Khách Hàng Tiềm Năng"
+        onTitleClick={() => navigation('/system/crm/potential_customer')}
+      >
+        <Menu.Item key="/opportunity_source">
+          <NavLink to="/system/crm/opportunity_source">Nguồn cơ hội</NavLink>
+        </Menu.Item>
+        <Menu.Item key="/customer_group">
+          <NavLink to="/system/crm/customer_group">Nhóm khách hàng</NavLink>
+        </Menu.Item>
+        <Menu.Item key="/potential_customer">
+          <NavLink to="/system/crm/potential_customer">Khách hàng tiềm năng</NavLink>
+        </Menu.Item>
+      </SubMenu>,
+
+
       <SubMenu
         key="customer_interactions"
         icon={<SmileOutlined />}
