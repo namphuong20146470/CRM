@@ -9,7 +9,7 @@ import NumericInput from '../../../utils/jsx/NumericInput';
 
 const { Option } = Select;
 
-const Editproduct = ({ productId, productAt, onCancel, onSuccess }) => {
+const Editproduct = ({ productId, stt, onCancel, onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
@@ -19,21 +19,21 @@ const Editproduct = ({ productId, productAt, onCancel, onSuccess }) => {
   const [suppliers, setSuppliers] = useState([]);
 
   useEffect(() => {
-    if (productId && productAt) fetchProductData(productId, productAt);
+    if (productId && stt) fetchProductData(productId, stt);
     fetchAndSetList('https://dx.hoangphucthanh.vn:3000/warehouse/accounts', setAccounts, 'Không thể tải danh sách người dùng');
     fetchAndSetList('https://dx.hoangphucthanh.vn:3000/warehouse/product-types', setProduct_Types, 'Không thể tải danh sách loại hàng');
     fetchAndSetList('https://dx.hoangphucthanh.vn:3000/warehouse/suppliers', setSuppliers, 'Không thể tải danh sách nhà cung cấp');
-  }, [productId, productAt]);
+  }, [productId, stt]);
 
-  const fetchProductData = async (id, at) => {
+  const fetchProductData = async (id, stt) => {
     setFetchLoading(true);
     try {
       const allProducts = await fetchDataList('https://dx.hoangphucthanh.vn:3000/warehouse/products');
       // So sánh cả mã hàng và ngày cập nhật (so sánh ISO string)
       const product = allProducts.find(item => 
-        item.ma_hang === id && item.ngay_cap_nhat === at
+        item.ma_hang === id && item.stt === stt
       );
-      if (!product) throw new Error(`Không tìm thấy hàng hóa với mã: ${id} và ngày cập nhật: ${at}`);
+      if (!product) throw new Error(`Không tìm thấy hàng hóa với mã: ${id} và số thứ tự: ${stt}`);
       setProductData(product);
       form.setFieldsValue({
         ...product,
@@ -61,7 +61,7 @@ const Editproduct = ({ productId, productAt, onCancel, onSuccess }) => {
       console.log('🚀 Payload gửi đi:', payload);
       
       // Sửa URL API tại đây
-      const response = await updateItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/products/${productId}/${productAt}`, payload);
+      const response = await updateItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/products/${productId}/${stt}`, payload);
 
       console.log('📦 Kết quả cập nhật:', response);
 
@@ -89,11 +89,7 @@ const Editproduct = ({ productId, productAt, onCancel, onSuccess }) => {
       ) : (
         <>
           <h2 className="edit-title" style={{ marginBottom: 24 }}>
-            Chỉnh sửa Hàng Hóa: {productData?.ma_hang || productId} với ngày cập nhật {
-              productData?.ngay_cap_nhat
-                ? dayjs(productData.ngay_cap_nhat).format('DD.MM.YYYY')
-                : productAt
-            }
+            Chỉnh sửa Hàng Hóa: {productData?.ma_hang || productId} với số thứ tự {productData?.stt}
           </h2>
           <Form form={form} layout="vertical" onFinish={onFinish} className="edit-form">
             <Row gutter={16}>

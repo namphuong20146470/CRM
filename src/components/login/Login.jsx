@@ -93,13 +93,14 @@ function Login() {
     boxShadow: 'none'
   };
   const formStyle = {
-    background: 'rgba(0,0,0,0.45)',
+    background: 'rgba(20, 20, 30, 0.85)', // nền đậm, trong suốt nhẹ
     padding: '40px',
-    borderRadius: '16px',
+    borderRadius: '18px',
     width: '100%',
     maxWidth: '400px',
     textAlign: 'center',
-    boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)'
+    boxShadow: '0 0 22px 0 #3a6cf6cc', // shadow xanh dương nhạt
+    border: '1px solid #3a6cf6cc', // viền xanh dương nhạt (tùy chọn)
   };
 
   return (
@@ -108,7 +109,7 @@ function Login() {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: "url('/image/login.jpg') center center/cover no-repeat"
+      background: "url('/image/login2.jpg') center center/cover no-repeat"
     }}>
       <div className="login-container" style={formStyle}>
         <h2 className="login-title" style={{ color: '#fff', marginBottom: 24, fontWeight: 700, letterSpacing: 1 }}>Đăng nhập hệ thống</h2>

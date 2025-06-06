@@ -96,11 +96,6 @@ function MainAppRoutes() {
           <Route path="/system/crm/contracts" element={<HopDong />} />
           <Route path="/system/crm/contract_type" element={<LoaiHopDong />} />
           <Route path="/system/crm/bill" element={<Bill />} />
-          
-          {/* Route Potential Customer - Add new routes */}
-          <Route path="/system/crm/opportunity_source" element={<OpportunitySource />} />
-          <Route path="/system/crm/customer_group" element={<CustomerGroup />} />
-          <Route path="/system/crm/potential_customer" element={<PotentialCustomer />} />
       
           {/* Route Products */}
           <Route path="/system/warehouse/product_type" element={<LoaiHang />} />

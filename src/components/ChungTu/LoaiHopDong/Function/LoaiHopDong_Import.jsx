@@ -50,7 +50,7 @@ const LoaiHopDong_Import = ({ open, onClose, onSuccess, disabled }) => {
         });
         base = maxNumber;
       }
-      return `LHD${String(base + index + 1).padStart(3, '0')}`;
+      return `LHD${String(base + index + 1).padStart(2, '0')}`;
     };
   })();
 
