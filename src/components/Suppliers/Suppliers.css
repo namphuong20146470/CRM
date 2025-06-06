@@ -1,0 +1,35 @@
+.edit-supplier-container {
+    padding: 24px;
+  }
+  
+  .edit-supplier-card {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+  
+  .edit-supplier-card .ant-card-head-title {
+    color: #000000;
+  }
+  
+  .black-text-input input,
+  .black-text-input textarea {
+    color: #000000 !important;
+  }
+  
+  .black-text-input input::placeholder,
+  .black-text-input textarea::placeholder {
+    color: rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .loading-message {
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #000000;
+  }

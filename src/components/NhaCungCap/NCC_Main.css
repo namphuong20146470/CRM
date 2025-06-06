@@ -1,0 +1,18 @@
+/* Thùng chứa chính */
+.bang-nha-cung-cap-wrapper {
+  padding: 30px;
+  background-color: #f4f6f8;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Vùng cuộn ngang */
+.bang-nha-cung-cap-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.filters .ant-input-affix-wrapper:nth-child(1) { width: 280px; }
+.filters .ant-select:nth-child(2) { width: 120px; }
+.filters .ant-select:nth-child(3) { width: 120px; }

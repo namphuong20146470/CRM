@@ -1,0 +1,189 @@
+/* ===== Layout & Container ===== */
+.import-container {
+  padding: 12px 0;
+  padding-top: 0px;
+}
+
+.import-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1890ff;
+}
+
+.import-content {
+  margin-top: 16px;
+}
+
+.template-section {
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+}
+
+.template-download {
+  margin-top: 12px;
+}
+
+/* ===== Preview Section ===== */
+.preview-section {
+  margin-top: 0 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 200px;
+  max-height: 70vh;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.preview-title {
+  margin-bottom: 4px !important;
+  margin-top: 0 !important;
+  font-size: 18px !important;
+}
+
+.preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding: 16px 0 0 0;
+  border-top: 1px solid #f0f0f0;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+/* ===== Error List ===== */
+.error-list {
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 8px 0 12px 0;
+}
+
+.error-items {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.error-items li {
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.error-row {
+  background-color: #fff1f0;
+}
+
+/* ===== Modal ===== */
+.import-modal.ant-modal {
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.import-modal .ant-modal-body {
+  padding-top: 0px !important;
+  padding-bottom: 8px !important;
+}
+
+.import-modal .ant-modal-content {
+  max-height: 95vh;
+  min-width: 900px;
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1500px) {
+  .import-modal .ant-modal-content {
+    min-width: 0;
+    width: 98vw;
+    max-width: 98vw;
+  }
+}
+
+/* ===== Preview Table ===== */
+.preview-table {
+  overflow-y: auto;
+  margin-top: 16px;
+  max-height: calc(70vh - 60px - 48px);
+}
+
+/* Đảm bảo bảng Table của Ant Design không bị tràn */
+.preview-table .ant-table-body {
+  max-height: 100% !important;
+  overflow-y: auto !important;
+}
+
+/* Đổi kích thước chữ cho toàn bộ bảng xem trước */
+.preview-table .ant-table {
+  font-size: 10px; /* hoặc 14px, 16px tùy ý */
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Tăng khoảng cách giữa các dòng dữ liệu trong bảng xem trước */
+.preview-table .ant-table-tbody > tr > td {
+  line-height: 1.5;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+/* Thêm viền nhạt cho bảng xem trước */
+.preview-table .ant-table-thead > tr > th,
+.preview-table .ant-table-tbody > tr > td {
+  border: 1px solid #e4e4e4 !important;
+  border-bottom: 1px solid #e4e4e4 !important;
+}
+
+.preview-table .ant-table-thead > tr > th:first-child,
+.preview-table .ant-table-tbody > tr > td:first-child {
+  border-left: 1px solid #e4e4e4 !important;
+}
+
+.preview-table .ant-table-thead > tr > th:last-child,
+.preview-table .ant-table-tbody > tr > td:last-child {
+  border-right: 1px solid #e4e4e4 !important;
+}
+
+/* Giảm chiều cao và padding của dòng tiêu đề cột trong bảng xem trước */
+.preview-table .ant-table-thead > tr > th {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  height: 28px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+}
+
+/* ===== Upload Drag ===== */
+.ant-upload.ant-upload-drag p.ant-upload-hint {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ant-upload.ant-upload-drag p.ant-upload-text {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .import-modal .ant-modal-body {
+    max-height: 95vh !important;
+    padding: 8px !important;
+  }
+}

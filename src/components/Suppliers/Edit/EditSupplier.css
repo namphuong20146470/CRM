@@ -1,0 +1,81 @@
+.edit-supplier-container {
+    padding: 12px;
+  }
+  
+  .edit-supplier-card {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .edit-form {
+    margin-top: 16px;
+  }
+  
+  /* Fix text color in all form inputs */
+  .edit-form input,
+  .edit-form .ant-input,
+  .edit-form .ant-select-selection-item,
+  .edit-form .ant-picker-input > input,
+  .edit-form .ant-input-number-input,
+  .edit-form .ant-input-affix-wrapper,
+  .edit-form .ant-select-selector,
+  .edit-form textarea {
+    color: rgba(0, 0, 0, 0.85) !important; /* Dark text color */
+  }
+  
+  /* Fix placeholder color */
+  .edit-form ::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+  }
+  
+  /* Ensure dropdown text is visible */
+  .ant-select-dropdown .ant-select-item {
+    color: rgba(0, 0, 0, 0.85);
+  }
+  
+  /* Fix date picker text */
+  .ant-picker-content th,
+  .ant-picker-content td {
+    color: rgba(0, 0, 0, 0.85);
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  
+  /* Ensure Select and DatePicker components get proper styles */
+  .ant-select {
+    width: 100%;
+  }
+  
+  /* Make read-only fields visually distinct but still readable */
+  .ant-input[disabled] {
+    color: rgba(0, 0, 0, 0.65) !important;
+    background-color: #f5f5f5;
+  }
+  
+  /* Highlight form label text for better readability */
+  .ant-form-item-label > label {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .ant-form-item {
+      margin-bottom: 16px;
+    }
+    
+    .edit-supplier-container {
+      padding: 8px;
+    }
+  }

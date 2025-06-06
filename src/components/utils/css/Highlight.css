@@ -1,0 +1,80 @@
+/* Phần khung và giao diện bảng chung */
+.custom-ant-table-highlight {
+    background-color: #fcfcfc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #888; /* Viền ngoài */
+}
+
+/* Header bảng */
+.custom-ant-table-highlight .ant-table-thead > tr > th {
+    background-color: #f0f2f5;
+    font-weight: 600;
+    color: #111;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    padding: 10px;
+}
+
+/* Dữ liệu trong bảng */
+.custom-ant-table-highlight .ant-table-tbody > tr > td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    font-size: 10px;
+    padding: 0;
+}
+
+/* Dòng cuối cùng rõ viền */
+.custom-ant-table-highlight .ant-table-tbody > tr:last-child > td {
+    border-bottom: 2px solid #ddd;
+}
+
+/* Cột cuối rõ viền phải */
+.custom-ant-table-highlight .ant-table-tbody > tr > td:last-child,
+.custom-ant-table-highlight .ant-table-thead > tr > th:last-child {
+    border-right: 1px solid #888;
+}
+
+/* Nút hành động */
+.custom-ant-table-highlight .ant-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0 12px;
+    border-radius: 6px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Màu nền cho các ô có giá trị */
+.red-highlight {
+    background-color: #ffcc99; /* Cam nhạt */
+    color: #333; /* Màu chữ tối */
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 8px 12px;
+}
+
+.blue-highlight {
+    background-color: #b2f0e6 !important;
+    color: #333 !important;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 8px 12px;
+}
+
+.green-highlight {
+    background-color: #d9f7be !important;
+    color: #333 !important;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 8px 12px;
+}
