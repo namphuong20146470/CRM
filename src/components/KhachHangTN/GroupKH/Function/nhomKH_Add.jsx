@@ -13,19 +13,68 @@ const AddNhomKH = ({ onCancel, onSuccess, disabled }) => {
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [accounts, setAccounts] = useState([]);
+  const [existingGroups, setExistingGroups] = useState([]);
 
   useEffect(() => {
-      // Use the warehouse API for accounts since that's where they're stored
-      fetchAndSetList('https://dx.hoangphucthanh.vn:3000/warehouse/accounts', setAccounts, 'Không thể tải danh sách người dùng')
-        .finally(() => setFetchLoading(false));
-      form.setFieldsValue({ngay_cap_nhat: moment()});
-    }, []);
+    const fetchData = async () => {
+      try {
+        // Use the warehouse API for accounts since that's where they're stored
+        await fetchAndSetList(
+          'https://dx.hoangphucthanh.vn:3000/warehouse/accounts', 
+          setAccounts, 
+          'Không thể tải danh sách người dùng'
+        );
+        
+        // Fetch existing customer groups
+        const groupsResponse = await crmInstance.get('/customer-groups');
+        const groupsData = Array.isArray(groupsResponse.data) 
+          ? groupsResponse.data 
+          : Array.isArray(groupsResponse.data?.data)
+            ? groupsResponse.data.data
+            : [];
+            
+        console.log('Nhóm khách hàng data:', groupsData);
+        setExistingGroups(groupsData);
+        
+        // Set default date
+        form.setFieldsValue({ngay_cap_nhat: moment()});
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        message.error('Không thể tải dữ liệu');
+      } finally {
+        setFetchLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
   
   const onFinish = async (values) => {
     setLoading(true);
     try {
+      // Generate the next ma_nhom_khach_hang code
+      let maxNumber = 0;
+      
+      if (Array.isArray(existingGroups)) {
+        existingGroups.forEach(item => {
+          if (item && item.ma_nhom_khach_hang) {
+            const match = item.ma_nhom_khach_hang.match(/^NKH(\d+)$/);
+            if (match) {
+              const num = parseInt(match[1], 10);
+              if (num > maxNumber) maxNumber = num;
+            }
+          }
+        });
+      } else {
+        console.warn('existingGroups is not an array:', existingGroups);
+      }
+      
+      const nextCode = `NKH${maxNumber + 1}`;
+      console.log('Generated next code:', nextCode);
+
       const payload = {
         ...values,
+        ma_nhom_khach_hang: nextCode, // Add automatically generated code
         ngay_cap_nhat: values.ngay_cap_nhat?.format('YYYY-MM-DD'),
       };
 
@@ -44,7 +93,7 @@ const AddNhomKH = ({ onCancel, onSuccess, disabled }) => {
       onSuccess?.(); // Callback reload data
     } catch (error) {
       console.error('Lỗi thêm mới:', error);
-      message.error('Không thể thêm mới nhóm khách hàng');
+      message.error('Không thể thêm mới nhóm khách hàng: ' + (error.message || 'Lỗi không xác định'));
     } finally {
       setLoading(false);
     }
@@ -61,20 +110,7 @@ const AddNhomKH = ({ onCancel, onSuccess, disabled }) => {
           <h2 className="edit-title" style={{ marginBottom: 24 }}>Thêm mới Nhóm Khách Hàng</h2>
           <Form form={form} layout="vertical" onFinish={onFinish} className="edit-form">
             <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item name="ma_nhom_khach_hang" label="Mã nhóm khách hàng" 
-                  rules={[
-                      { required: true, message: 'Mã nhóm khách hàng không được để trống' },
-                      {
-                          pattern: /^[^a-z]+$/,
-                          message: 'Không được chứa chữ thường (a–z)',
-                      },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
+              <Col span={24}>
                 <Form.Item name="nhom_khach_hang" label="Tên nhóm khách hàng" rules={[{ required: true, message: 'Tên nhóm khách hàng không được để trống' }]}>
                   <Input />
                 </Form.Item>
@@ -82,7 +118,7 @@ const AddNhomKH = ({ onCancel, onSuccess, disabled }) => {
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item name="nguoi_cap_nhat" label="Người cập nhật" rules={[{ required: true }]}>
+                <Form.Item name="nguoi_cap_nhat" label="Người cập nhật" rules={[{ required: true, message: 'Vui lòng chọn người cập nhật' }]}>
                   <Select showSearch optionFilterProp="children" placeholder="Chọn người cập nhật">
                     {accounts.map(account => (
                       <Option key={account.ma_nguoi_dung} value={account.ma_nguoi_dung}>

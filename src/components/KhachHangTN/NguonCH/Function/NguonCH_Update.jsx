@@ -96,9 +96,17 @@ const EditNguonCH = ({ nguonCHId, onCancel, onSuccess }) => {
                   <Form.Item 
                     name="ma_nguon" 
                     label="Mã nguồn"
-                    extra={`Mã nguồn: ${nguonCHData?.ma_nguon || nguonCHId}`}
+                    initialValue={nguonCHData?.ma_nguon || nguonCHId}
                   >
-                    <Input disabled style={{ color: '#000', fontWeight: 'bold' }} />
+                    <Input 
+                      disabled 
+                      value={nguonCHData?.ma_nguon || nguonCHId}
+                      style={{ 
+                        color: '#000', 
+                        fontWeight: 'bold', 
+                        backgroundColor: '#f5f5f5' 
+                      }} 
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12}>

@@ -48,6 +48,9 @@ const systemAdmin = {
 export default function DashboardLanding({ onSelectSystem }) {
   const user = getCurrentUser();
   const isSuperAdmin = user && (user.vai_tro === 'VT01' || user.role === 'VT01');
+  
+  // Also allow VT02 (managers) to access admin section with limited permissions
+  const canAccessAdmin = isSuperAdmin || (user && (user.vai_tro === 'VT02' || user.role === 'VT02'));
 
   return (
     <div style={{ padding: 32 }}>
@@ -79,12 +82,12 @@ export default function DashboardLanding({ onSelectSystem }) {
           </Col>
         ))}
       </Row>
-      {isSuperAdmin && (
+      {canAccessAdmin && (
         <Row gutter={[32, 32]} justify="center">
           <Col key={systemAdmin.key}>
             <Card
               hoverable
-              style={{ width: 180, textAlign: 'center', borderRadius: 12 }}
+              style={{ width: 180, textAlign: 'center', borderRadius: 12, backgroundColor: isSuperAdmin ? '#f6ffed' : undefined, borderColor: isSuperAdmin ? '#b7eb8f' : undefined }}
               onClick={() => onSelectSystem(systemAdmin.key)}
             >
               {systemAdmin.icon}
