@@ -82,20 +82,26 @@ export default function DashboardLanding({ onSelectSystem }) {
           </Col>
         ))}
       </Row>
-      {canAccessAdmin && (
-        <Row gutter={[32, 32]} justify="center">
-          <Col key={systemAdmin.key}>
-            <Card
-              hoverable
-              style={{ width: 180, textAlign: 'center', borderRadius: 12, backgroundColor: isSuperAdmin ? '#f6ffed' : undefined, borderColor: isSuperAdmin ? '#b7eb8f' : undefined }}
-              onClick={() => onSelectSystem(systemAdmin.key)}
-            >
-              {systemAdmin.icon}
-              <div style={{ marginTop: 16, fontWeight: 600 }}>{systemAdmin.label}</div>
-            </Card>
-          </Col>
-        </Row>
-      )}
+    {canAccessAdmin && (
+      <Row gutter={[32, 32]} justify="center">
+        <Col key={systemAdmin.key}>
+          <Card
+            hoverable
+            style={{ 
+              width: 180, 
+              textAlign: 'center', 
+              borderRadius: 12, 
+              backgroundColor: isSuperAdmin ? '#f6ffed' : undefined, 
+              borderColor: isSuperAdmin ? '#b7eb8f' : undefined 
+            }}
+            onClick={() => onSelectSystem(systemAdmin.key)}
+          >
+            {systemAdmin.icon}
+            <div style={{ marginTop: 16, fontWeight: 600 }}>{systemAdmin.label}</div>
+          </Card>
+        </Col>
+      </Row>
+    )}
     </div>
   );
 }
