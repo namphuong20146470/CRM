@@ -6,7 +6,7 @@ import RouteApp from './routes';
 function App() {
   useEffect(() => {
     if (!sessionStorage.getItem('maintenanceTabOpened')) {
-      window.open('https://dx.hoangphucthanh.vn:3000/maintenance', '_blank');
+      window.open('https://dx.hoangphucthanh.vn:3000', '_blank');
       sessionStorage.setItem('maintenanceTabOpened', '1');
     }
   }, []);

@@ -13,7 +13,7 @@
     overflow-x: auto;
 }
 
-.TKKHxuatkho-filters .ant-input-affix-wrapper:nth-child(1) { width: 200px; }
+.TKKHxuatkho-filters .ant-input-affix-wrapper:nth-child(1) { width: 360px; }
 .TKKHxuatkho-filters .ant-select:nth-child(2) { width: 90px; }
 
 /* Chỉ áp dụng khi có class only-two-cols */

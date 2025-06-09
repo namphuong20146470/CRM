@@ -43,12 +43,19 @@ const ThongKeKhachHangXK = () => {
     fetchCustomers();
   }, []);
 
-  // Lấy tất cả mã hàng và mã khách hàng
-  const allMaHang = Array.from(new Set(data.map(item => item.ma_hang)));
-  const allMaKhach = Array.from(new Set(customers.map(cus => cus.ma_khach_hang)));
-
   // Sử dụng filterLogic để lọc dữ liệu
   const filteredRawData = filterThongKeKhachHang(data, { searchTerm, yearFilter, customers });
+
+  // Lấy tất cả mã hàng và mã khách hàng
+  const allMaHang = Array.from(new Set(data.map(item => item.ma_hang)));
+  // Lọc ra các mã khách hàng có ít nhất 1 dòng có số lượng > 0
+  const allMaKhach = Array.from(
+    new Set(
+      filteredRawData
+        .filter(item => item.so_luong_xuat > 0)
+        .map(item => item.ten_khach_hang)
+    )
+  );
 
   // Group dữ liệu: mỗi mã hàng là 1 dòng, mỗi mã khách là 1 cột
   const groupedData = {};
