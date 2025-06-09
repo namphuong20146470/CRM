@@ -213,12 +213,6 @@ export const validateData = (
     if (item.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email)) {
       itemErrors.push('Email không đúng định dạng');
     }
-    if (item.so_dien_thoai && !/^\d+$/.test(item.so_dien_thoai)) {
-      itemErrors.push('Số điện thoại phải là số và không chứa ký tự khác');
-    }
-    if (item.ma_so_thue && !/^\d+$/.test(item.ma_so_thue)) {
-      itemErrors.push('Mã số thuế phải là số và không chứa ký tự khác');
-    }
 
     if (itemErrors.length > 0) {
       errors.push({

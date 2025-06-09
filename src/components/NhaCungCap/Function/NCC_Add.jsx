@@ -95,7 +95,7 @@ const AddSupplier = ({ onCancel, onSuccess, disabled }) => {
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item name="so_dien_thoai" label="SĐT" >
-                    <Input type="number" />
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -118,7 +118,7 @@ const AddSupplier = ({ onCancel, onSuccess, disabled }) => {
                 </Col>
                 <Col span={12}>
                   <Form.Item name="ma_so_thue" label="Mã số thuế" >
-                    <Input type="number" />
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>

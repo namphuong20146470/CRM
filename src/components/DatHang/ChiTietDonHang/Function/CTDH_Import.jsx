@@ -456,7 +456,7 @@ const ChiTietDonHang_Import = ({ open, onClose, onSuccess, disabled }) => {
       open={open}
       onCancel={handleClose}
       footer={null}
-      width={1200}
+      width={showPreview ? 1200 : "60vw"}
       destroyOnClose
     >
       <Spin spinning={importLoading} tip="Đang nhập dữ liệu...">

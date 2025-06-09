@@ -28,10 +28,10 @@
     background-color: #fffbe6; /* sáng hơn #fff7e6, tạo tương phản hơn với Tag cam */
 }
 
-.filters .ant-input-affix-wrapper:nth-child(1) { width: 320px; }
-.filters .ant-select:nth-child(2) { width: 90px; }
-.filters .ant-select:nth-child(3) { width: 120px; }
-.filters .ant-select:nth-child(4) { width: 120px; }
-.filters .ant-select:nth-child(5) { width: 200px; }
-.filters .ant-select:nth-child(6) { width: 160px; }
+.tonkho-filters .ant-input-affix-wrapper:nth-child(1) { width: 200px; }
+.tonkho-filters .ant-select:nth-child(2) { width: 90px; }
+.tonkho-filters .ant-select:nth-child(3) { width: 140px; }
+.tonkho-filters .ant-select:nth-child(4) { width: 120px; }
+.tonkho-filters .ant-select:nth-child(5) { width: 200px; }
+.tonkho-filters .ant-select:nth-child(6) { width: 180px; }
 

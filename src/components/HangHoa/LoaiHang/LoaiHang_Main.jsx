@@ -37,7 +37,7 @@ const BangLoaiHang = () => {
     // State phân trang
     const [showImportModal, setShowImportModal] = useState(false);
     const [showExportModal, setShowExportModal] = useState(false);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(20);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_cap_nhat');
     const [sortOrder, setSortOrder] = useState('descend');

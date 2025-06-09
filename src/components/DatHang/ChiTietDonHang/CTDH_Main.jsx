@@ -45,7 +45,7 @@ const BangChiTietDonHang = () => {
     const [product_typeFilter, setProduct_TypeFilter] = useState('all');
     const [accountFilter, setAccountFilter] = useState('all');
     const [yearFilter, setYearFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(50);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_dat_hang');
     const [sortOrder, setSortOrder] = useState('descend');

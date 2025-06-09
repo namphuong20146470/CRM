@@ -46,7 +46,7 @@ const BangNhapKho = () => {
     const [supplierFilter, setSupplierFilter] = useState('all');
     const [warehouseFilter, setWarehouseFilter] = useState('all');
     const [yearFilter, setYearFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(50);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_nhap_hang');
     const [sortOrder, setSortOrder] = useState('descend');

@@ -34,6 +34,18 @@ const TonKho_UpdateAuto = ({ visible, onClose, onRefresh, disabled }) => {
                 fetchDataList('https://dx.hoangphucthanh.vn:3000/warehouse/inventory'),
             ]);
 
+            // XÓA TOÀN BỘ BẢNG INVENTORY TRƯỚC
+            if (inventoryData.length > 0) {
+                await Promise.all(
+                    inventoryData.map(item =>
+                        deleteItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/inventory/${item.ma_inventory}`)
+                    )
+                );
+                console.log(`Đã xóa toàn bộ ${inventoryData.length} bản ghi tồn kho.`);
+            } else {
+                console.log('Không có bản ghi tồn kho nào để xóa.');
+            }
+
             // === Lưu lại mapping tồn kho tối thiểu cũ cho từng mã hàng ===
             const mucTonToiThieuMap = {};
             inventoryData.forEach(item => {
@@ -69,19 +81,6 @@ const TonKho_UpdateAuto = ({ visible, onClose, onRefresh, disabled }) => {
 
             // Xử lý từng năm
             for (const year of yearOptions) {
-                // Xóa inventory cũ của năm này
-                const inventoryToDelete = inventoryData.filter(item => item.nam === year);
-                if (inventoryToDelete.length > 0) {
-                    await Promise.all(
-                        inventoryToDelete.map(item =>
-                            deleteItemById(`https://dx.hoangphucthanh.vn:3000/warehouse/inventory/${item.ma_inventory}`)
-                        )
-                    );
-                    console.log(`Đã xóa ${inventoryToDelete.length} bản ghi tồn kho của năm ${year}.`);
-                } else {
-                    console.log(`Không có bản ghi nào để xóa trong năm ${year}.`);
-                }
-
                 // Lọc ra các cặp (ma_hang, ten_kho) có phát sinh trong năm này
                 const keysForYear = allKeys.filter(k => k.nam === year);
 

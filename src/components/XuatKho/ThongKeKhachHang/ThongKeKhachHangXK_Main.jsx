@@ -16,7 +16,7 @@ const ThongKeKhachHangXK = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
   const [yearFilter, setYearFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -189,6 +189,7 @@ const ThongKeKhachHangXK = () => {
           (matchedCustomer ? " only-two-cols" : "")
         }
         loading={loading}
+        scroll={{ x: 'max-content' }}
       />
       <PaginationControl
         total={tableData.length}

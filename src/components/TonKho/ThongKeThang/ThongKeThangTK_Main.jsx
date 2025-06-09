@@ -15,7 +15,7 @@ const ThongKeThang = () => {
   const [dataIn, setDataIn] = useState([]);
   const [dataOut, setDataOut] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
   const [yearFilter, setYearFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');

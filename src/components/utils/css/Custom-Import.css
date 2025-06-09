@@ -73,7 +73,7 @@
 
 .error-items {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 4px;
 }
 
 .error-items li {
@@ -83,6 +83,12 @@
 
 .error-row {
   background-color: #fff1f0;
+}
+
+/* Giảm padding và bỏ bo góc cho khung báo lỗi (Alert) */
+.ant-alert-error,
+.ant-alert-error.ant-alert-with-description {
+  padding: 8px 12px !important;   /* Giảm padding trên/dưới và trái/phải */
 }
 
 /* ===== Modal ===== */
@@ -105,10 +111,12 @@
 .import-modal .ant-modal-content {
   max-height: 95vh;
   min-width: 900px;
-  max-width: 1500px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  padding-top: 10px !important;
+  padding-bottom: 4px !important;
 }
 
 @media (max-width: 1500px) {
@@ -169,6 +177,11 @@
   height: 28px !important;
   font-size: 10px !important;
   font-weight: 600 !important;
+}
+
+.preview-table .ant-table-tbody > tr > td,
+.preview-table .ant-table-tbody > tr > td .ant-typography {
+  font-size: 10px !important;
 }
 
 /* ===== Upload Drag ===== */

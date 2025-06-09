@@ -26,18 +26,25 @@
     text-align: left;                  /* 🔥 Căn trái */
 }
 
-/* Phần hiển thị đã chọn */
+/* Đảm bảo select filter luôn canh giữa theo chiều dọc */
+.filters .ant-select {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+/* Selector canh giữa và không bị thụt */
 .filters .ant-select-selector {
+    display: flex !important;
+    align-items: center !important;
+    height: 35px !important;
+    padding: 0 12px !important;
     background-color: #28a745 !important;
     color: white !important;
-    font-weight: 600; /* Chữ in đậm */
-    height: 35px !important;
+    font-weight: 600;
     border-radius: 6px !important;
-    display: flex !important;
-    align-items: left !important;
-    justify-content: center !important;
     border: none !important;
-    padding: 0 12px !important;
+    box-sizing: border-box;
 }
 
 /* Nội dung item đã chọn */
@@ -51,12 +58,21 @@
     height: 100%;
 }
 
-/* Icon mũi tên trong select */
+/* Mũi tên canh giữa */
 .filters .ant-select-arrow {
     color: white !important;           /* Màu trắng đậm */
-    font-weight: 1000 !important;       /* Đậm hơn */
+    font-weight: bold !important;       /* Đậm hơn */
     font-size: 14px !important;        /* Tăng kích thước nếu muốn */
     display: flex;
+}
+
+/* Đảm bảo container filter không bị lệch */
+.filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 /* Nút làm mới */

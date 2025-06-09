@@ -13,7 +13,5 @@
     overflow-x: auto;
 }
 
-.filters .ant-input-affix-wrapper:nth-child(1) { width: 320px; }
-.filters .ant-select:nth-child(2) { width: 140px; }
-.filters .ant-select:nth-child(3) { width: 140px; }
-.filters .ant-select:nth-child(4) { width: 90px; }
+.TKTchitietdonhang-filters .ant-input-affix-wrapper:nth-child(1) { width: 200px; }
+.TKTchitietdonhang-filters .ant-select:nth-child(2) { width: 90px; }

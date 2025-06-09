@@ -13,8 +13,8 @@
     overflow-x: auto;
 }
 
-.filters .ant-input-affix-wrapper:nth-child(1) { width: 320px; }
-.filters .ant-select:nth-child(2) { width: 180px; }
-.filters .ant-select:nth-child(3) { width: 150px; }
-.filters .ant-select:nth-child(4) { width: 90px; }
+.khachhang-filters .ant-input-affix-wrapper:nth-child(1) { width: 320px; }
+.khachhang-filters .ant-select:nth-child(2) { width: 180px; }
+.khachhang-filters .ant-select:nth-child(3) { width: 150px; }
+.khachhang-filters .ant-select:nth-child(4) { width: 90px; }
 

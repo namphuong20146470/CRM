@@ -46,7 +46,7 @@ const BangHangHoa = () => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [countryFilter, setCountryFilter] = useState('all');
     const [supplierFilter, setSupplierFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(50);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_cap_nhat');
     const [sortOrder, setSortOrder] = useState('descend');

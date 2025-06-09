@@ -26,7 +26,7 @@ const KhachHangFilter = ({
   );
 
   return (
-    <div className="filters">
+    <div className="filters khachhang-filters">
       <Input
         placeholder="Tìm kiếm theo mã, tên khách hàng hoặc tỉnh"
         prefix={<SearchOutlined />}

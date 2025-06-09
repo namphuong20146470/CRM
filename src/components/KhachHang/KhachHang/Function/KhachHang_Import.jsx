@@ -86,6 +86,14 @@ const KhachHang_Import = ({ open, onClose, onSuccess, disabled }) => {
         item.tong_no_phai_thu === ''
           ? 0
           : Number(item.tong_no_phai_thu),
+      ma_so_thue:
+        item.ma_so_thue !== undefined && item.ma_so_thue !== null
+          ? String(item.ma_so_thue).trim()
+          : '',
+      so_dien_thoai:
+        item.so_dien_thoai !== undefined && item.so_dien_thoai !== null
+          ? String(item.so_dien_thoai).trim()
+          : '',
     }));
   };
 
@@ -127,6 +135,7 @@ const KhachHang_Import = ({ open, onClose, onSuccess, disabled }) => {
 
     try {
       const dataToImport = prepareDataForImport(parsedData);
+      console.log('Data gửi lên:', dataToImport);
 
       // Thử nhập toàn bộ dữ liệu
       const success = await importAllItems(dataToImport);

@@ -20,7 +20,7 @@ const ThongKeThangFilter = ({
   );
 
   return (
-    <div className="filters">
+    <div className="filters TKTxuatkho-filters">
       <Input
         placeholder="Tìm kiếm mã hàng"
         prefix={<SearchOutlined />}

@@ -1,15 +1,9 @@
-@import 'antd/dist/antd.css';
+@import 'antd/dist/reset.css';
 
 /* Tổng thể */
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f0f2f5;
-}
-
-/* Style cho Header */
-.site-layout-background {
-  background: #051e55 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Logo */
@@ -18,14 +12,19 @@ body {
   font-size: 24px !important;
   font-weight: 700 !important;
   letter-spacing: 1px;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
-
 .logo:hover {
   color: #1890ff !important;
 }
 
-/* Style cho Menu trên Header */
+/* Header */
+.site-layout-background {
+  background: #051e55 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Menu trên Header */
 .header-menu.ant-menu-horizontal {
   line-height: 64px;
   background: transparent !important;
@@ -33,7 +32,6 @@ body {
   align-items: center;
   gap: 8px;
 }
-
 .header-menu.ant-menu-horizontal > .ant-menu-item,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu {
   color: #fff !important;
@@ -42,74 +40,83 @@ body {
   margin: 0 2px;
   padding: 0 10px;
   border-radius: 4px;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
-/* Đảm bảo chữ trong NavLink cũng là màu trắng */
+/* Đảm bảo chữ trong NavLink và submenu là màu trắng */
 .header-menu.ant-menu-horizontal > .ant-menu-item a,
-.header-menu.ant-menu-horizontal > .ant-menu-submenu a {
+.header-menu.ant-menu-horizontal > .ant-menu-submenu a,
+.header-menu .ant-menu-submenu-title,
+.header-menu .ant-menu-submenu-title a {
   color: #fff !important;
   text-decoration: none;
+  font-weight: 600;
 }
 
-/* Hover và selected */
+/* Hover & Selected cho menu và submenu */
 .header-menu.ant-menu-horizontal > .ant-menu-item:hover,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu:hover,
 .header-menu.ant-menu-horizontal > .ant-menu-item-active,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu-active,
 .header-menu.ant-menu-horizontal > .ant-menu-item-open,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu-open,
+.header-menu.ant-menu-horizontal > .ant-menu-submenu-title-selected,
 .header-menu.ant-menu-horizontal > .ant-menu-item-selected,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu-selected {
   color: #1890ff !important;
-  background: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(24, 144, 255, 0.12) !important;
   border-bottom: none !important;
 }
 
-/* Đảm bảo chữ trong NavLink cũng đổi màu khi hover/selected */
+.header-menu .ant-menu-submenu-title:hover {
+  color: #1890ff !important;
+}
+
+/* Đảm bảo chữ trong NavLink đổi màu khi hover/selected */
 .header-menu.ant-menu-horizontal > .ant-menu-item:hover a,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu:hover a,
 .header-menu.ant-menu-horizontal > .ant-menu-item-active a,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu-active a,
 .header-menu.ant-menu-horizontal > .ant-menu-item-open a,
 .header-menu.ant-menu-horizontal > .ant-menu-submenu-open a,
+.header-menu.ant-menu-horizontal > .ant-menu-submenu-title a,
 .header-menu.ant-menu-horizontal > .ant-menu-item-selected a,
-.header-menu.ant-menu-horizontal > .ant-menu-submenu-selected a {
+.header-menu.ant-menu-horizontal > .ant-menu-submenu-selected a,
+.header-menu .ant-menu-submenu-title:hover a,
+.header-menu .ant-menu-submenu-selected > .ant-menu-submenu-title a,
+.header-menu .ant-menu-submenu-open > .ant-menu-submenu-title a {
   color: #1890ff !important;
 }
 
-/* Style cho Avatar */
+/* Avatar */
 .ant-avatar-lg.ant-avatar-icon {
   font-size: 14px;
   background: #1890ff;
   border: 2px solid #fff;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
-
 .ant-avatar-lg.ant-avatar-icon:hover {
   background: #40a9ff;
 }
 
-/* Style cho nội dung bên dưới */
+/* Nội dung bên dưới */
 .site-layout .site-layout-background {
   background: #fff !important;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 24px;
 }
-
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #1e1e2f !important;
 }
 
-/* Style cho Footer */
+/* Footer */
 .ant-layout-footer {
   background: #051e55 !important;
   color: #fff !important;
   padding: 16px 0 !important;
   text-align: center;
 }
-
 .ant-layout-footer h3 {
   margin: 0;
   font-size: 16px;
@@ -123,13 +130,11 @@ body {
     flex-wrap: wrap;
     justify-content: center;
   }
-
   .header-menu.ant-menu-horizontal > .ant-menu-item,
   .header-menu.ant-menu-horizontal > .ant-menu-submenu {
     margin: 4px 6px;
     padding: 0 8px;
   }
-
   .logo {
     font-size: 20px !important;
   }

@@ -28,7 +28,7 @@ const HangHoaFilter = ({
   const uniqueSuppliers = getUniqueValues(data, (item) => item.suppliers?.ten_nha_cung_cap);
 
   return (
-    <div className="filters">
+    <div className="filters hanghoa-filters">
         <Input
             className="search-input"
             placeholder="Tìm kiếm theo mã, tên hàng hoặc tên loại hàng"

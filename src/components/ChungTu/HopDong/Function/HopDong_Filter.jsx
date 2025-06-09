@@ -29,7 +29,7 @@ const HopDongFilter = ({
   const uniqueStatus = getUniqueValues(data, (item) => item.trang_thai_hop_dong);
 
   return (
-    <div className="filters">
+    <div className="filters hopdong-filters">
       <Input
         placeholder="Tìm kiếm theo số hợp đồng, tên đối tác"
         prefix={<SearchOutlined />}
