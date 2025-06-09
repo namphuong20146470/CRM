@@ -36,6 +36,10 @@ const Explain = lazy(() => import("../components/Explain/Explain"));
 const OpportunitySource = lazy(() => import("../components/KhachHangTN/NguonCH/NguonCH_Main"));
 const CustomerGroup = lazy(() => import("../components/KhachHangTN/GroupKH/nhomKH_Main"));
 const PotentialCustomer = lazy(() => import("../components/KhachHangTN/KHTN/KHTN_Main"));
+
+// Import Administration component
+const Administration = lazy(() => import("../components/Administration/Administration.component"));
+
 function MainAppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,6 +51,7 @@ function MainAppRoutes() {
         onSelectSystem={(key) => {
           if (key === 'warehouse') navigate('/system/warehouse');
           else if (key === 'crm') navigate('/system/crm');
+          else if (key === 'admin') navigate('/system/admin');
           // ... các phân hệ khác
         }}
       />
@@ -57,6 +62,7 @@ function MainAppRoutes() {
   let menuType = null;
   if (location.pathname.startsWith("/system/warehouse")) menuType = "warehouse";
   if (location.pathname.startsWith("/system/crm")) menuType = "crm";
+  if (location.pathname.startsWith("/system/admin")) menuType = "admin";
   // ...các phân hệ khác...
 
   // Điều hướng mặc định vào menu con đầu tiên
@@ -65,6 +71,9 @@ function MainAppRoutes() {
   }
   if (location.pathname === "/system/crm") {
     return <Navigate to="/system/crm/customers" replace />;
+  }
+  if (location.pathname === "/system/admin") {
+    return <Navigate to="/system/admin/login-history" replace />;
   }
 
   return (
@@ -116,6 +125,9 @@ function MainAppRoutes() {
           <Route path="/system/warehouse/order_detail" element={<ChiTietDonHang />} />
           <Route path="/system/warehouse/order_detail_with_month" element={<CTDHThang />} />
           <Route path="/system/warehouse/order_detail_with_customer" element={<CTDHKhachHang />} />
+
+          {/* Route Administration */}
+          <Route path="/system/admin/login-history" element={<Administration />} />
           
           {/* Route Profile */}
           <Route path="/profile" element={<Profile />} />

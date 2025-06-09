@@ -19,6 +19,8 @@ import {
   UserAddOutlined,
   DollarOutlined,
   SmileOutlined,
+  SettingOutlined,
+  SafetyCertificateOutlined,
 } from '@ant-design/icons';
 
 import './layout.css';
@@ -200,6 +202,51 @@ function LayoutApp(props) {
       </SubMenu>,
       <Menu.Item key="crm_report" icon={<PieChartOutlined />} disabled>
         Báo cáo doanh thu
+      </Menu.Item>,
+      <SubMenu
+        key="user"
+        icon={
+          <IconButton aria-label="user">
+            <Avatar size="large" icon={<UserOutlined />} />
+          </IconButton>
+        }
+      >
+        <Menu.Item key="logout" onClick={handleLogout}>Log out</Menu.Item>
+      </SubMenu>
+    ];
+  } else if (menuType === "admin") {
+    menuItems = [
+      <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
+        <NavLink to="/home">Trang chủ</NavLink>
+      </Menu.Item>,
+      <Menu.Item key="/admin/login-history" icon={<TeamOutlined />}>
+        <NavLink to="/system/admin/login-history">Lịch sử đăng nhập</NavLink>
+      </Menu.Item>,
+      <SubMenu
+        key="system_settings"
+        icon={<SettingOutlined />}
+        title="Cài đặt hệ thống"
+        onTitleClick={showComingSoon}
+      >
+        <Menu.Item key="/system_settings/users" onClick={showComingSoon}>Quản lý người dùng</Menu.Item>
+        <Menu.Item key="/system_settings/roles" onClick={showComingSoon}>Quản lý vai trò</Menu.Item>
+        <Menu.Item key="/system_settings/permissions" onClick={showComingSoon}>Phân quyền</Menu.Item>
+      </SubMenu>,
+      <SubMenu
+        key="system_security"
+        icon={<SafetyCertificateOutlined />}
+        title="Bảo mật hệ thống"
+        onTitleClick={showComingSoon}
+      >
+        <Menu.Item key="/system_security/password_policy" onClick={showComingSoon}>Chính sách mật khẩu</Menu.Item>
+        <Menu.Item key="/system_security/access_control" onClick={showComingSoon}>Kiểm soát truy cập</Menu.Item>
+        <Menu.Item key="/system_security/activity_logs" onClick={showComingSoon}>Nhật ký hoạt động</Menu.Item>
+      </SubMenu>,
+      <Menu.Item key="/system/backup" icon={<DatabaseOutlined />} onClick={showComingSoon}>
+        Sao lưu & Phục hồi
+      </Menu.Item>,
+      <Menu.Item key="/system/monitoring" icon={<BarChartOutlined />} onClick={showComingSoon}>
+        Giám sát hệ thống
       </Menu.Item>,
       <SubMenu
         key="user"
