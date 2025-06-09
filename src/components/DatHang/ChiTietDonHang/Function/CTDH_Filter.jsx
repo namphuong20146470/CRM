@@ -26,7 +26,7 @@ const ChiTietDonHangFilter = ({
   );
 
   return (
-    <div className="filters">
+    <div className="filters chitietdonhang-filters">
       <Input
         placeholder="Tìm kiếm theo mã hàng, hợp đồng, đơn hàng, khách hàng"
         prefix={<SearchOutlined />}

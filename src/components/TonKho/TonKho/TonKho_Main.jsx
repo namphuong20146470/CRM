@@ -46,7 +46,7 @@ const BangTonKho = () => {
     const [yearFilter, setYearFilter] = useState('all');
     const [multiplierFilter, setMultiplierFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(50);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('nam');
     const [sortOrder, setSortOrder] = useState('descend');

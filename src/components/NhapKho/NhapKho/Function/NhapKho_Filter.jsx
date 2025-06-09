@@ -29,7 +29,7 @@ const NhapKhoFilter = ({
   );
 
   return (
-    <div className="filters">
+    <div className="filters nhapkho-filters">
       <Input
         placeholder="Tìm kiếm theo mã hàng, số hợp đồng, bill"
         prefix={<SearchOutlined />}

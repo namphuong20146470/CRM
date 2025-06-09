@@ -91,7 +91,10 @@ const Editcustomer = ({ customerId, onCancel, onSuccess }) => {
                 <Form.Item name="ten_khach_hang" label="Tên khách hàng" 
                   rules={[
                     { required: true, message: 'Tên khách hàng không được để trống' },
-                    { pattern: /^[A-Z0-9 ]+$/, message: 'Chỉ cho phép chữ hoa, số và khoảng trắng' },
+                    {
+                        pattern: /^[^a-z]+$/,
+                        message: 'Không được chứa chữ thường (a–z)',
+                    },
                   ]}
                 >
                   <Input />
@@ -112,7 +115,7 @@ const Editcustomer = ({ customerId, onCancel, onSuccess }) => {
               </Col>
               <Col span={12}>
                 <Form.Item name="ma_so_thue" label="Mã số thuế" rules={[{ required: true }]}>
-                  <Input type="number" />
+                  <Input />
                 </Form.Item>
               </Col>
             </Row>
@@ -138,7 +141,7 @@ const Editcustomer = ({ customerId, onCancel, onSuccess }) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item name="so_dien_thoai" label="SĐT" rules={[{ required: true }]}>
-                  <Input type="number" />
+                  <Input />
                 </Form.Item>
               </Col>
               <Col span={12}>

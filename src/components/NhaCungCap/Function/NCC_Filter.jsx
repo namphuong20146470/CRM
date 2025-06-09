@@ -21,7 +21,7 @@ const NhaCungCapFilter = ({
   const uniqueCountries = getUniqueValues(data, (item) => item.quoc_gia);
 
   return (
-    <div className="filters">
+    <div className="filters nhacungcap-filters">
       <Input
         placeholder="Tìm kiếm theo mã hoặc tên nhà cung cấp"
         prefix={<SearchOutlined />}

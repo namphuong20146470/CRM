@@ -36,10 +36,7 @@ const Explain = lazy(() => import("../components/Explain/Explain"));
 const OpportunitySource = lazy(() => import("../components/KhachHangTN/NguonCH/NguonCH_Main"));
 const CustomerGroup = lazy(() => import("../components/KhachHangTN/GroupKH/nhomKH_Main"));
 const PotentialCustomer = lazy(() => import("../components/KhachHangTN/KHTN/KHTN_Main"));
-
-// Import Administration component
 const Administration = lazy(() => import("../components/Administration/Administration.component"));
-
 function MainAppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -126,9 +123,10 @@ function MainAppRoutes() {
           <Route path="/system/warehouse/order_detail_with_month" element={<CTDHThang />} />
           <Route path="/system/warehouse/order_detail_with_customer" element={<CTDHKhachHang />} />
           
+
           {/* Route Administration */}
           <Route path="/system/admin/login-history" element={<Administration />} />
-          
+
           {/* Route Profile */}
           <Route path="/profile" element={<Profile />} />
           {/* Route Statistic */}

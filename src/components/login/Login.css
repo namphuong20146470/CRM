@@ -7,7 +7,7 @@
   background-image: url("./background.jpg");
 }
 
-/* Container chứa form login với nền trắng, bo tròn và đổ bóng */
+/* Container chứa form login với nền trong suốt và hiệu ứng blur */
 .login-container {
   background: transparent;
   backdrop-filter: blur(8px);
@@ -24,7 +24,7 @@
   margin-bottom: 24px;
   font-size: 28px;
   font-weight: 600;
-  color: #ffffff;
+  color: #fff;
 }
 
 /* Các item của form có khoảng cách hợp lý */
@@ -32,27 +32,32 @@
   margin-bottom: 16px;
 }
 
-/* Tùy chỉnh style cho input */
-.login-input {
+/* Tùy chỉnh style cho input và input password */
+.login-input,
+.ant-input,
+.ant-input-password input,
+.ant-input-password .ant-input {
   background: transparent !important;
-  color: transparent !important;
-  text-shadow: 0 0 0 white !important;
-  border: 1px solid rgba(255, 255, 255, 0.5) !important;
   padding: 10px;
+  color: #fff !important;
   border-radius: 30px;
   font-size: 16px;
   outline: none !important;
+  text-shadow: none !important;
 }
 
-.login-input::placeholder {
-  color: rgba(255, 255, 255, 0.6) !important;
+.login-form .ant-input::placeholder,
+.login-form .ant-input-password input::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.login-input:focus {
-  border-color: white !important;
+.login-input:focus,
+.ant-input:focus,
+.ant-input-password input:focus {
+  border-color: #fff !important;
 }
 
-/* Nút Login với kích thước và font chữ đẹp */
+/* Nút Login */
 .login-button {
   height: 40px;
   font-size: 16px;
@@ -80,18 +85,5 @@
 }
 
 .checkbox-item label {
-  color: white !important;
-}
-
-/* Đảm bảo Ant Design styles không ghi đè */
-.ant-input,
-.ant-input-password {
-  background: transparent !important;
-  color: white !important;
-}
-
-.ant-input:focus,
-.ant-input-password:focus {
-  border-color: white !important;
-  box-shadow: none;
+  color: #fff !important;
 }

@@ -28,7 +28,7 @@ const TonKhoFilter = ({
   const uniqueWarehouses = getUniqueValues(data, (item) => item.warehouse?.ten_kho);
 
   return (
-    <div className="filters">
+    <div className="filters tonkho-filters">
       <Input
         placeholder="Tìm kiếm theo mã hàng"
         prefix={<SearchOutlined />}

@@ -131,9 +131,13 @@ export const handleFileUpload = (file, {
           if (!apiField) return;
           let value = row[colIndex];
 
-          // Ép kiểu chuỗi cho các trường cần thiết
+          // Ép kiểu chuỗi cho các trường cần thiết và trim khoảng trắng
+          if (value !== undefined && value !== null && typeof value === 'string') {
+            value = value.trim();
+          }
+
           if (stringFields.includes(apiField) && value !== undefined && value !== null) {
-            value = value.toString();
+            value = value.toString().trim();
           }
 
           value = processSpecialField(apiField, value);

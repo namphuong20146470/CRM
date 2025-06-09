@@ -82,6 +82,14 @@ const NhaCungCap_Import = ({ open, onClose, onSuccess, disabled }) => {
         item.tong_no_phai_tra === ''
           ? 0
           : Number(item.tong_no_phai_tra),
+      ma_so_thue:
+        item.ma_so_thue !== undefined && item.ma_so_thue !== null
+          ? String(item.ma_so_thue).trim()
+          : '',
+      so_dien_thoai:
+        item.so_dien_thoai !== undefined && item.so_dien_thoai !== null
+          ? String(item.so_dien_thoai).trim()
+          : '',
     }));
   };
 

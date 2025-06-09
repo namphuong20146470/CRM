@@ -45,7 +45,7 @@ const BangKhachHang = () => {
     const [yearFilter, setYearFilter] = useState('all');
     const [accountFilter, setAccountFilter] = useState('all');
     const [provinceFilter, setProvinceFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(50);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_them_vao');
     const [sortOrder, setSortOrder] = useState('descend');

@@ -19,12 +19,10 @@ import {
   UserAddOutlined,
   DollarOutlined,
   SmileOutlined,
+    SettingOutlined,
+  SafetyCertificateOutlined
 } from '@ant-design/icons';
-import {
-  // Existing imports...
-  SettingOutlined,
-  SafetyCertificateOutlined,
-} from '@ant-design/icons';
+
 import './layout.css';
 
 const showComingSoon = () => {
@@ -56,7 +54,7 @@ function LayoutApp(props) {
       <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
         <NavLink to="/home">Trang chủ</NavLink>
       </Menu.Item>,
-      <Menu.Item key="warehouse" icon={<InboxOutlined />} onClick={showComingSoon}>
+      <Menu.Item key="warehouse" icon={<InboxOutlined />} disabled>
         Kho hàng
       </Menu.Item>,
       <SubMenu
@@ -66,7 +64,7 @@ function LayoutApp(props) {
         onTitleClick={() => navigation('/system/warehouse/suppliers')}
       >
         <Menu.Item key="/suppliers"><NavLink to="/system/warehouse/suppliers">Danh sách nhà cung cấp</NavLink></Menu.Item>
-        <Menu.Item key="/new_supplier" onClick={showComingSoon}>Nhà cung cấp mới</Menu.Item>
+        <Menu.Item key="/new_supplier" disabled>Nhà cung cấp mới</Menu.Item>
       </SubMenu>,
       <SubMenu
         key="products"
@@ -76,7 +74,7 @@ function LayoutApp(props) {
       >
         <Menu.Item key="/product_types"><NavLink to="/system/warehouse/product_type">Loại hàng</NavLink></Menu.Item>
         <Menu.Item key="/products"><NavLink to="/system/warehouse/products">Danh mục hàng hóa</NavLink></Menu.Item>
-        <Menu.Item key="/product_images" onClick={showComingSoon}>Ảnh hàng hóa</Menu.Item>
+        <Menu.Item key="/product_images" disabled>Ảnh hàng hóa</Menu.Item>
       </SubMenu>,
       <SubMenu
         key="stock_in"
@@ -103,7 +101,7 @@ function LayoutApp(props) {
         title="Tồn Kho"
         onTitleClick={() => navigation('/system/warehouse/inventory')}
       >
-        <Menu.Item key="/inventory_check" onClick={showComingSoon}>Kiểm kê kho</Menu.Item>
+        <Menu.Item key="/inventory_check" disabled>Kiểm kê kho</Menu.Item>
         <Menu.Item key="/inventory"><NavLink to="/system/warehouse/inventory">Tồn kho</NavLink></Menu.Item>
         <Menu.Item key="/inventory_with_month"><NavLink to="/system/warehouse/inventory_with_month">Thống kê hàng nhập và xuất theo tháng</NavLink></Menu.Item>
       </SubMenu>,
@@ -118,7 +116,7 @@ function LayoutApp(props) {
         <Menu.Item key="/order_detail_with_month"><NavLink to="/system/warehouse/order_detail_with_month">Thống kê hàng đặt theo tháng</NavLink></Menu.Item>
         <Menu.Item key="/order_detail_with_customer"><NavLink to="/system/warehouse/order_detail_with_customer">Thống kê hàng đặt theo khách hàng</NavLink></Menu.Item>
       </SubMenu>,
-      <Menu.Item key="/report_warehouse" icon={<BarChartOutlined />} onClick={showComingSoon}>
+      <Menu.Item key="/report_warehouse" icon={<BarChartOutlined />} disabled>
         Báo cáo Kho Hàng
       </Menu.Item>,
       <SubMenu
@@ -132,7 +130,91 @@ function LayoutApp(props) {
         <Menu.Item key="logout" onClick={handleLogout}>Log out</Menu.Item>
       </SubMenu>
     ];
-  }  else if (menuType === "admin") {
+  } else if (menuType === "crm") {
+    menuItems = [
+      <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
+        <NavLink to="/home">Trang chủ</NavLink>
+      </Menu.Item>,
+      <SubMenu
+        key="customers"
+        icon={<TeamOutlined />}
+        title="Khách Hàng"
+        onTitleClick={() => navigation('/system/crm/customers')}
+      >
+        <Menu.Item key="/customers"><NavLink to="/system/crm/customers">Khách hàng</NavLink></Menu.Item>
+        <Menu.Item key="new_customer" disabled>Khách hàng mới</Menu.Item>
+        <Menu.Item key="by_city" disabled>Thống kê KH theo tỉnh thành</Menu.Item>
+        <Menu.Item key="by_staff" disabled>Thống kê KH theo người phụ trách</Menu.Item>
+        <Menu.Item key="competitor" disabled>Đối thủ mới</Menu.Item>
+      </SubMenu>,
+
+        //Chung tu
+      <SubMenu
+        key="contracts"
+        icon={<FileTextOutlined />}
+        title="Chứng Từ"
+        onTitleClick={() => navigation('/system/crm/contracts')}
+      >
+        <Menu.Item key="/contract_types"><NavLink to="/system/crm/contract_type">Loại hợp đồng</NavLink></Menu.Item>
+        <Menu.Item key="/contracts"><NavLink to="/system/crm/contracts">Hợp Đồng</NavLink></Menu.Item>
+        <Menu.Item key="/bill"><NavLink to="/system/crm/bill">Bill</NavLink></Menu.Item>
+      </SubMenu>,
+      //Bao gia
+            <SubMenu
+        key="quotations"
+        icon={<DollarOutlined />}
+        title="Báo Giá"
+        // onTitleClick={showComingSoon}
+        disabled
+      >
+        <Menu.Item key="/quotation_status" disabled>Trạng thái báo giá</Menu.Item>
+        <Menu.Item key="/quotation_type" disabled>Loại báo giá</Menu.Item>
+        <Menu.Item key="/quotations" disabled>Báo giá</Menu.Item>
+      </SubMenu>,
+      //Khach hang tiem nang
+      <SubMenu
+        key="potential_customer"
+        icon={<UserAddOutlined />}
+        title="Khách Hàng Tiềm Năng"
+        onTitleClick={() => navigation('/system/crm/potential_customer')}
+      >
+        <Menu.Item key="/opportunity_source">
+          <NavLink to="/system/crm/opportunity_source">Nguồn cơ hội</NavLink>
+        </Menu.Item>
+        <Menu.Item key="/customer_group">
+          <NavLink to="/system/crm/customer_group">Nhóm khách hàng</NavLink>
+        </Menu.Item>
+        <Menu.Item key="/potential_customer">
+          <NavLink to="/system/crm/potential_customer" disabled>Khách hàng tiềm năng</NavLink>
+        </Menu.Item>
+      </SubMenu>,
+
+
+      <SubMenu
+        key="customer_interactions"
+        icon={<SmileOutlined />}
+        title="Chăm sóc khách hàng"
+        // onTitleClick={showComingSoon}
+        disabled
+      >
+        <Menu.Item key="/interaction_type" disabled>Loại tương tác</Menu.Item>
+        <Menu.Item key="/customer_interactions" disabled>Chăm sóc khách hàng</Menu.Item>
+      </SubMenu>,
+      <Menu.Item key="crm_report" icon={<PieChartOutlined />} disabled>
+        Báo cáo doanh thu
+      </Menu.Item>,
+      <SubMenu
+        key="user"
+        icon={
+          <IconButton aria-label="user">
+            <Avatar size="large" icon={<UserOutlined />} />
+          </IconButton>
+        }
+      >
+        <Menu.Item key="logout" onClick={handleLogout}>Log out</Menu.Item>
+      </SubMenu>
+    ];
+  }else if (menuType === "admin") {
     menuItems = [
       <Menu.Item key="dashboard" icon={<AppstoreOutlined />}>
         <NavLink to="/home">Trang chủ</NavLink>
@@ -206,11 +288,10 @@ function LayoutApp(props) {
         </div>
       </Header>
       <Layout className="site-layout">
-        <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '8px 0', color: '#fff' }}>
-            <Breadcrumb.Item> </Breadcrumb.Item>
-            <Breadcrumb.Item></Breadcrumb.Item>
-          </Breadcrumb>
+        <Content style={{ margin: '24px 16px' }}>
+          {/* <Breadcrumb style={{ color: '#fff' }}>
+            <Breadcrumb.Item>&nbsp;</Breadcrumb.Item>
+          </Breadcrumb> */}
           <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
             {children}
           </div>

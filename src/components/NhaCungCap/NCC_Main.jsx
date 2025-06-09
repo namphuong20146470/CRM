@@ -38,7 +38,7 @@ const BangNhaCungCap = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [countryFilter, setCountryFilter] = useState('all');
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(20);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortField, setSortField] = useState('ngay_them_vao');
     const [sortOrder, setSortOrder] = useState('descend');

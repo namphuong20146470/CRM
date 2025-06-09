@@ -20,7 +20,7 @@ const ThongKeKhachHangCTDH_Filter = ({
   );
 
   return (
-    <div className="filters">
+    <div className="filters TKKHchitietdonhang-filters">
       <Input
         placeholder="Tìm kiếm theo mã hàng, mã hoặc tên khách hàng"
         prefix={<SearchOutlined />}

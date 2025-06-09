@@ -29,7 +29,7 @@ const XuatKhoFilter = ({
   );
 
   return (
-    <div className="filters">
+    <div className="filters xuatkho-filters">
       <Input
         placeholder="Tìm kiếm theo mã hàng, khách hàng"
         prefix={<SearchOutlined />}

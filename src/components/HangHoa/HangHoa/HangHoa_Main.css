@@ -13,10 +13,10 @@
     overflow-x: auto;
 }
 
-.filters .ant-input-affix-wrapper:nth-child(1) { width: 320px; }
-.filters .ant-input-affix-wrapper:nth-child(2) { width: 160px; }
-.filters .ant-select:nth-child(3) { width: 200px; }
-.filters .ant-select:nth-child(5) { width: 140px; }
-.filters .ant-select:nth-child(4) { width: 140px; }
-.filters .ant-select:nth-child(6) { width: 140px; }
+.hanghoa-filters .ant-input-affix-wrapper:nth-child(1) { width: 320px; }
+.hanghoa-filters .ant-input-affix-wrapper:nth-child(2) { width: 160px; }
+.hanghoa-filters .ant-select:nth-child(3) { width: 160px; }
+.hanghoa-filters .ant-select:nth-child(5) { width: 140px; }
+.hanghoa-filters .ant-select:nth-child(4) { width: 140px; }
+.hanghoa-filters .ant-select:nth-child(6) { width: 140px; }
 

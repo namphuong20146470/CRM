@@ -138,7 +138,7 @@ const Editstock_in = ({ stock_inId, onCancel, onSuccess }) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item name="ten_nha_cung_cap" label="Nhà cung cấp" rules={[{ required: true }]}>
-                  <Select showSearch optionFilterProp="children" placeholder="Chọn nhà cung cấp" disabled>
+                  <Select optionFilterProp="children" placeholder="Chọn nhà cung cấp" disabled>
                     {suppliers.map(supplier => (
                       <Option key={supplier.ma_nha_cung_cap} value={supplier.ma_nha_cung_cap}>
                         {supplier.ten_nha_cung_cap}
