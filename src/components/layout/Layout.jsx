@@ -165,11 +165,11 @@ function LayoutApp(props) {
         icon={<DollarOutlined />}
         title="Báo Giá"
         // onTitleClick={showComingSoon}
-        disabled
       >
         <Menu.Item key="/quotation_status" disabled>Trạng thái báo giá</Menu.Item>
         <Menu.Item key="/quotation_type" disabled>Loại báo giá</Menu.Item>
         <Menu.Item key="/quotations" disabled>Báo giá</Menu.Item>
+        <Menu.Item key="/auto_number_quote"><NavLink to="/system/crm/auto_number_quote">Báo giá số tự động</NavLink></Menu.Item>
       </SubMenu>,
       //Khach hang tiem nang
       <SubMenu

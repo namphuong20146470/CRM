@@ -14,15 +14,16 @@ export const loadProductDescriptions = async () => {
 
   // Giả sử dòng đầu là tiêu đề: [Mã số, Mô tả VIE]
   for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    if (row[0]) {
-      descriptionMap[row[0].toString().trim()] = row[1] || '';
-    }
+  const row = data[i];
+  if (row[0]) {
+    // Lưu key về dạng chữ thường để tra cứu không phân biệt hoa thường
+    descriptionMap[row[0].toString().trim().toLowerCase()] = row[1] || '';
   }
-  return descriptionMap;
+}
+return descriptionMap;
 };
 
 export const getProductDescription = async (maHang) => {
   await loadProductDescriptions();
-  return descriptionMap[maHang] || '';
+  return descriptionMap[(maHang || '').toLowerCase()] || '';
 };

@@ -31,6 +31,7 @@ const LineChart = lazy(() => import("../components/Chart/LineChart"));
 const Suppliers = lazy(() => import("../components/Suppliers/Suppliers"));
 const AddSupplier = lazy(() => import("../components/Suppliers/AddSupplier"));
 const Explain = lazy(() => import("../components/Explain/Explain"));
+const BaoGiaSo = lazy(() => import("../components/BaoGia/BaoGiaTuDong/BaoGiaSo"));
 
 // Import new components for Potential Customer section
 const OpportunitySource = lazy(() => import("../components/KhachHangTN/NguonCH/NguonCH_Main"));
@@ -96,6 +97,9 @@ function MainAppRoutes() {
           <Route path="/system/crm/contracts" element={<HopDong />} />
           <Route path="/system/crm/contract_type" element={<LoaiHopDong />} />
           <Route path="/system/crm/bill" element={<Bill />} />
+
+          {/* Route Quotations */}
+          <Route path="/system/crm/auto_number_quote" element={<BaoGiaSo />} />
           
           {/* Route Potential Customer - Add new routes */}
           <Route path="/system/crm/opportunity_source" element={<OpportunitySource />} />

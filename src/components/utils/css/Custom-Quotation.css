@@ -1,0 +1,179 @@
+/* ===== Container & Card ===== */
+.quotation-container {
+  padding: 20px;
+}
+
+/* ===== Title ===== */
+.quotation-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+/* ===== Table ===== */
+.bao-gia-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* ===== Table font size for quotation ===== */
+.bao-gia-scroll-wrapper .ant-table-thead > tr > th {
+  font-size: 11px !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+.bao-gia-scroll-wrapper .ant-table-tbody > tr > td {
+  font-size: 10px !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/* ===== Form ===== */
+.quotation-form {
+  margin-top: 16px;
+}
+.quotation-form input,
+.quotation-form .ant-input-number-input,
+.quotation-form .ant-picker,
+.quotation-form .ant-input-affix-wrapper,
+.quotation-form .ant-select-selector,
+.quotation-form .ant-select-selection-item {
+  color: rgba(0,0,0,0.85) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  transition: all 0.3s;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+}
+.quotation-form .ant-input-number-input { height: 100% !important; }
+.quotation-form .ant-input-number {
+  height: 40px !important;
+  border-radius: 6px !important;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.quotation-form .ant-select-selector {
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.quotation-form .ant-select-selection-item {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+.quotation-form .ant-select-arrow {
+  display: flex !important;
+  align-items: center !important;
+  height: 40px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  right: 11px !important;
+  pointer-events: none;
+}
+.quotation-form ::placeholder {
+  color: rgba(0,0,0,0.4) !important;
+}
+.quotation-form .ant-select { display: flex !important; align-items: center !important; }
+
+/* Textarea cho báo giá */
+.quotation-form textarea {
+  color: rgba(0,0,0,0.85) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  transition: all 0.3s;
+  resize: vertical !important;
+  min-height: 250px !important;
+  height: auto !important;
+  max-height: 600px;
+}
+
+/* ===== Focus & Disabled ===== */
+.quotation-form .ant-input:focus,
+.quotation-form .ant-input-number:focus,
+.quotation-form .ant-input-affix-wrapper:focus-within,
+.quotation-form .ant-select-focused .ant-select-selector,
+.quotation-form .ant-input-number-focused,
+.quotation-form .ant-picker-focused {
+  border-color: #1890ff !important;
+  box-shadow: 0 0 0 2px rgba(24,144,255,0.3) !important;
+}
+.ant-input[disabled],
+.quotation-form input[disabled] {
+  background-color: #f5f5f5 !important;
+  color: rgba(0,0,0,0.65) !important;
+  border-radius: 6px !important;
+  border-top: 1px solid #d9d9d9 !important;
+  border-bottom: 1px solid #d9d9d9 !important;
+  height: 40px !important;
+}
+
+/* ===== Label & Dropdown ===== */
+.ant-form-item-label > label {
+  color: rgba(0,0,0,0.85);
+  font-weight: 500;
+}
+.ant-select-dropdown .ant-select-item,
+.ant-picker-content th,
+.ant-picker-content td {
+  color: rgba(0,0,0,0.85);
+}
+
+/* Input nhỏ, text bên trái cho bảng báo giá */
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-input-number,
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-input-number-input {
+  font-size: 10px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  width: 50px !important;
+  padding: 0 4px !important;
+  text-align: left !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+
+/* Select nhỏ cho bảng báo giá */
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-select,
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-select-single .ant-select-selector,
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-select-selector,
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-select-selection-item {
+  font-size: 11px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  padding: 0 20px 0 4px !important;
+  text-align: left !important;
+  align-items: center !important;      /* căn giữa dọc */
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+  line-height: 20px !important;
+  display: flex !important;
+}
+
+/* Mũi tên select bảng báo giá */
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-select-arrow {
+  display: flex !important;
+  align-items: center !important;
+  height: 20px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  right: 11px !important;
+  pointer-events: none;
+}
+
+/* Bỏ bo viền input và select trong bảng báo giá */
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-input-number,
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-input-number-input,
+.bao-gia-scroll-wrapper .ant-table-tbody .ant-select-selector {
+  border-radius: 0 !important;
+}
