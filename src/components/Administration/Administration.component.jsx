@@ -40,7 +40,7 @@ const Administration = () => {
   return (
     <div style={{ padding: '20px', height: 'calc(100vh - 120px)', overflow: 'auto' }}>
       <Card style={{ height: '100%' }}>
-        <Title level={3}>Quản trị hệ thống - Lịch sử đăng nhập</Title>
+        <Title level={3}>Quản trị hệ thống - Lịch</Title>
         
         {errorMessage && (
           <div style={{ marginBottom: 16, color: 'red' }}>
